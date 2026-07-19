@@ -1,0 +1,127 @@
+{
+ "n_personas": 100,
+ "skipped_answers": 8,
+ "questions": {
+  "grocery_channel_preference": {
+   "tvd": 0.1,
+   "simulated": {
+    "Hard discounter": 0.41,
+    "Full-range supermarket (Carrefour, Tesco, similar)": 0.54,
+    "Specialty / local shops": 0.05,
+    "Online grocery delivery": 0.0
+   },
+   "reference": {
+    "Hard discounter": 0.35,
+    "Full-range supermarket (Carrefour, Tesco, similar)": 0.5,
+    "Specialty / local shops": 0.1,
+    "Online grocery delivery": 0.05
+   }
+  },
+  "organic_purchase_frequency": {
+   "tvd": 0.075,
+   "simulated": {
+    "Regularly (weekly or more often)": 0.135,
+    "Sometimes (few times per month)": 0.292,
+    "Rarely (a few times per year)": 0.333,
+    "Never": 0.24
+   },
+   "reference": {
+    "Regularly (weekly or more often)": 0.15,
+    "Sometimes (few times per month)": 0.25,
+    "Rarely (a few times per year)": 0.3,
+    "Never": 0.3
+   }
+  },
+  "price_vs_quality_priority": {
+   "tvd": 0.2,
+   "simulated": {
+    "Low price is the main factor": 0.12,
+    "Quality and price matter equally": 0.6,
+    "Quality is more important than price": 0.27,
+    "Brand reputation / familiarity": 0.01
+   },
+   "reference": {
+    "Low price is the main factor": 0.25,
+    "Quality and price matter equally": 0.45,
+    "Quality is more important than price": 0.22,
+    "Brand reputation / familiarity": 0.08
+   }
+  },
+  "smoking_status": {
+   "tvd": 0.23,
+   "simulated": {
+    "Yes, daily": 0.01,
+    "Yes, occasionally": 0.0,
+    "No, but I used to": 0.21,
+    "No, never": 0.78
+   },
+   "reference": {
+    "Yes, daily": 0.15,
+    "Yes, occasionally": 0.08,
+    "No, but I used to": 0.22,
+    "No, never": 0.55
+   }
+  },
+  "online_grocery_adoption": {
+   "tvd": 0.15,
+   "simulated": {
+    "Yes, regularly (at least monthly)": 0.09,
+    "Yes, occasionally (a few times)": 0.21,
+    "No, but I plan to try": 0.01,
+    "No, and I don't plan to": 0.69
+   },
+   "reference": {
+    "Yes, regularly (at least monthly)": 0.1,
+    "Yes, occasionally (a few times)": 0.2,
+    "No, but I plan to try": 0.15,
+    "No, and I don't plan to": 0.55
+   }
+  },
+  "household_food_budget_share": {
+   "tvd": 0.2768,
+   "simulated": {
+    "Less than 10%": 0.02,
+    "10–15%": 0.303,
+    "16–20%": 0.394,
+    "More than 20%": 0.283
+   },
+   "reference": {
+    "Less than 10%": 0.2,
+    "10–15%": 0.4,
+    "16–20%": 0.25,
+    "More than 20%": 0.15
+   }
+  },
+  "sustainable_label_influence": {
+   "tvd": 0.13,
+   "simulated": {
+    "Heavily — I specifically seek them out": 0.09,
+    "Somewhat — I prefer them if available": 0.21,
+    "Minimally — I notice but don't prioritize": 0.51,
+    "Not at all": 0.19
+   },
+   "reference": {
+    "Heavily — I specifically seek them out": 0.12,
+    "Somewhat — I prefer them if available": 0.28,
+    "Minimally — I notice but don't prioritize": 0.38,
+    "Not at all": 0.22
+   }
+  },
+  "preferred_product_information": {
+   "tvd": 0.5523,
+   "simulated": {
+    "Ingredient list and allergens": 0.134,
+    "Nutritional values (calories, fats, sugars)": 0.0,
+    "Origin / production method": 0.124,
+    "Price and value for money": 0.742
+   },
+   "reference": {
+    "Ingredient list and allergens": 0.35,
+    "Nutritional values (calories, fats, sugars)": 0.28,
+    "Origin / production method": 0.18,
+    "Price and value for money": 0.19
+   }
+  }
+ },
+ "calibration_score": 78.6
+}

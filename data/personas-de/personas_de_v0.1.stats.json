@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "count": 1000,
+    "version": "0.1",
+    "model": "claude-opus-4-8",
+    "generated_at": "2026-07-19",
+    "seed": 42,
+    "mock_mode": false
+  },
+  "marginal_validation": {
+    "age_band": {
+      "max_delta": 0.026999999999999996,
+      "per_option_deltas": {
+        "18-29": 0.012999999999999984,
+        "30-49": 0.0030000000000000027,
+        "50-64": 0.01100000000000001,
+        "65+": 0.026999999999999996
+      }
+    },
+    "bundesland": {
+      "max_delta": 0.013000000000000005,
+      "per_option_deltas": {
+        "NRW": 0.0050000000000000044,
+        "BY": 0.0050000000000000044,
+        "BW": 0.007000000000000006,
+        "NI": 0.0020000000000000018,
+        "HE": 0.012999999999999998,
+        "RP": 0.008,
+        "SN": 0.006999999999999999,
+        "BE": 0.013000000000000005,
+        "SH": 0.0050000000000000044,
+        "BB": 0.011,
+        "ST": 0.0049999999999999975,
+        "TH": 0.004,
+        "HH": 0.002999999999999999,
+        "MV": 0.004,
+        "SL": 0.002,
+        "HB": 0.0
+      }
+    },
+    "education": {
+      "max_delta": 0.015000000000000013,
+      "per_option_deltas": {
+        "low": 0.012999999999999984,
+        "medium": 0.015000000000000013,
+        "high": 0.0020000000000000018
+      }
+    },
+    "gender": {
+      "max_delta": 0.019000000000000017,
+      "per_option_deltas": {
+        "female": 0.019000000000000017,
+        "male": 0.019000000000000017
+      }
+    },
+    "grocery_channel_preference": {
+      "max_delta": 0.017,
+      "per_option_deltas": {
+        "hard_discounter": 0.006000000000000005,
+        "full_range_supermarket": 0.0020000000000000018,
+        "specialty_local": 0.017,
+        "online_delivery": 0.008999999999999994
+      }
+    },
+    "household_size": {
+      "max_delta": 0.014000000000000012,
+      "per_option_deltas": {
+        "1": 0.0030000000000000027,
+        "2": 0.008000000000000007,
+        "3": 0.002999999999999989,
+        "4": 0.014000000000000012,
+        "5+": 0.005999999999999998
+      }
+    },
+    "net_household_income_band": {
+      "max_delta": 0.043,
+      "per_option_deltas": {
+        "under_1500": 0.043,
+        "1500_2500": 0.014000000000000012,
+        "2500_4000": 0.0,
+        "4000_plus": 0.029000000000000026
+      }
+    },
+    "occupation_status": {
+      "max_delta": 0.04300000000000004,
+      "per_option_deltas": {
+        "employed": 0.04300000000000004,
+        "self_employed": 0.001999999999999995,
+        "retired": 0.00799999999999998,
+        "student": 0.000999999999999994,
+        "not_employed": 0.035999999999999976
+      }
+    },
+    "online_grocery_usage": {
+      "max_delta": 0.016,
+      "per_option_deltas": {
+        "regularly": 0.016,
+        "occasionally": 0.010999999999999982,
+        "planning": 0.01100000000000001,
+        "not_planning": 0.006000000000000005
+      }
+    },
+    "organic_purchase_frequency": {
+      "max_delta": 0.019999999999999962,
+      "per_option_deltas": {
+        "regularly": 0.01200000000000001,
+        "sometimes": 0.007000000000000006,
+        "rarely": 0.015000000000000013,
+        "never": 0.019999999999999962
+      }
+    },
+    "price_vs_quality_orientation": {
+      "max_delta": 0.007000000000000006,
+      "per_option_deltas": {
+        "price_priority": 0.0010000000000000009,
+        "balanced": 0.006000000000000005,
+        "quality_priority": 0.007000000000000006,
+        "brand_priority": 0.0
+      }
+    }
+  },
+  "summary": {
+    "max_deviation_any_field": 0.04300000000000004,
+    "avg_deviation": 0.021272727272727276
+  }
+}

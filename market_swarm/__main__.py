@@ -1,7 +1,10 @@
 """CLI entry point for Market Swarm."""
 
 import argparse
+import asyncio
 import json
+from datetime import datetime
+from pathlib import Path
 
 from .engine import DEFAULT_MODEL, print_results, run_simulation
 
@@ -57,6 +60,41 @@ def main():
 
     # list-packs command
     subparsers.add_parser("list-packs", help="List available industry packs")
+
+    # generate-personas-de command
+    gen_parser = subparsers.add_parser(
+        "generate-personas-de",
+        help="Generate census-grounded German consumer personas",
+    )
+    gen_parser.add_argument(
+        "--n", type=int, default=100, help="Number of personas to generate (default: 100)"
+    )
+    gen_parser.add_argument(
+        "--seed", type=int, default=42, help="Random seed for reproducibility (default: 42)"
+    )
+    gen_parser.add_argument(
+        "--model",
+        "-m",
+        default=DEFAULT_MODEL,
+        help=f"LLM model to use (default: {DEFAULT_MODEL})",
+    )
+    gen_parser.add_argument(
+        "--output",
+        "-o",
+        default="data/personas-de/",
+        help="Output directory (default: data/personas-de/)",
+    )
+    gen_parser.add_argument(
+        "--generated-at",
+        default=None,
+        help="Generated date (ISO 8601, default: today)",
+    )
+    gen_parser.add_argument(
+        "--max-concurrent",
+        type=int,
+        default=5,
+        help="Max concurrent LLM calls (default: 5)",
+    )
 
     args = parser.parse_args()
 
@@ -148,6 +186,69 @@ def main():
                 print(
                     f"  {pack.product_type:15s}  {pack.display_name} (v{pack.version}) \u2014 {len(pack.personas)} personas"
                 )
+
+    elif args.command == "generate-personas-de":
+        from rich.console import Console
+
+        from .personas_de import (
+            compile_stats,
+            generate_personas_de,
+            write_personas_jsonl,
+            write_stats_json,
+        )
+
+        console = Console()
+        generated_at = args.generated_at or datetime.now().isoformat()
+
+        output_dir = Path(args.output)
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        base_name = "personas_de_v0.1"
+        personas_jsonl_path = output_dir / f"{base_name}.jsonl"
+        stats_json_path = output_dir / f"{base_name}.stats.json"
+
+        console.print(f"[cyan]Generating {args.n} German personas (seed={args.seed})...[/cyan]")
+
+        try:
+            personas, validation_reports = asyncio.run(
+                generate_personas_de(
+                    n=args.n,
+                    seed=args.seed,
+                    model=args.model,
+                    max_concurrent=args.max_concurrent,
+                    on_progress=lambda c, t: console.print(
+                        f"  [{c}/{t}] narratives generated...", end="\r"
+                    ),
+                )
+            )
+            console.print()  # newline after progress
+
+            write_personas_jsonl(personas, personas_jsonl_path)
+            stats = compile_stats(
+                personas,
+                validation_reports,
+                model=args.model,
+                generated_at=generated_at,
+                seed=args.seed,
+            )
+            write_stats_json(stats, stats_json_path)
+
+            console.print(
+                f"[green]\u2713[/green] Generated {len(personas)} personas to {personas_jsonl_path}"
+            )
+            console.print(f"[green]\u2713[/green] Stats saved to {stats_json_path}")
+
+            # Print marginal validation summary
+            console.print("\n[bold]Marginal Validation Summary:[/bold]")
+            console.print(
+                f"  Max deviation (any field): {stats['summary']['max_deviation_any_field']:.2%}"
+            )
+            console.print(f"  Avg deviation: {stats['summary']['avg_deviation']:.2%}")
+
+        except Exception as e:
+            console.print(f"[red]Error: {e}[/red]")
+            parser.exit(status=1)
+
     else:
         parser.print_help()
 

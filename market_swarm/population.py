@@ -324,12 +324,103 @@ def _load_hf_dataset(
     return result
 
 
+def _load_personas_de(n: int, seed: int = 42) -> list[PersonaDefinition]:
+    """Load personas from locally generated personas-de JSONL dataset.
+
+    Looks for data/personas-de/personas_de_v0.1.jsonl.
+    Samples n records reservoir-style for reproducibility.
+
+    Args:
+        n: Number of personas to sample.
+        seed: Random seed for reproducible sampling (default: 42).
+
+    Returns:
+        List of PersonaDefinition objects.
+
+    Raises:
+        FileNotFoundError: If data/personas-de/personas_de_v0.1.jsonl does not exist.
+    """
+    import json
+    from pathlib import Path
+
+    jsonl_path = Path(__file__).parent.parent / "data" / "personas-de" / "personas_de_v0.1.jsonl"
+
+    if not jsonl_path.exists():
+        raise FileNotFoundError(
+            f"Personas-DE dataset not found at {jsonl_path}. "
+            f"Generate it with: python -m market_swarm generate-personas-de --n {n}"
+        )
+
+    random.seed(seed)
+
+    personas = []
+    seen_count = 0
+
+    with open(jsonl_path, encoding="utf-8") as f:
+        for line in f:
+            if not line.strip():
+                continue
+            record = json.loads(line)
+            persona_text = record.pop("persona_text", "")
+
+            seen_count += 1
+            if len(personas) < n:
+                personas.append((persona_text, record))
+            else:
+                j = random.randint(0, seen_count - 1)
+                if j < n:
+                    personas[j] = (persona_text, record)
+
+            if seen_count > n * 100:
+                break
+
+    # Convert to PersonaDefinition
+    result = []
+    for i, (persona_text, record) in enumerate(personas):
+        # Extract demographic details for system prompt
+        demo_fields = [
+            f"Age: {record.get('age_band', 'N/A')}",
+            f"Gender: {record.get('gender', 'N/A')}",
+            f"State: {record.get('bundesland', 'N/A')}",
+            f"Household: {record.get('household_size', 'N/A')} persons",
+            f"Education: {record.get('education', 'N/A')}",
+            f"Income: {record.get('net_household_income_band', 'N/A')}",
+            f"Status: {record.get('occupation_status', 'N/A')}",
+        ]
+
+        system_prompt = (
+            f"You are this German consumer persona:\n\n{persona_text}\n\n"
+            f"Details: {', '.join(demo_fields)}\n\n"
+            "Evaluate the product strictly from this person's perspective — "
+            "considering budget, habits, values, and lifestyle fit. "
+            "You respond in the simulation's requested output language. "
+            "Be direct and personal."
+        )
+
+        persona = PersonaDefinition(
+            name=f"DE Consumer {i:04d}",
+            type="population_consumer_de",
+            retailer=None,
+            system_prompt=system_prompt,
+            evaluation_criteria=[
+                "purchase_intent",
+                "price_acceptance",
+                "brand_appeal",
+                "fit_with_lifestyle",
+            ],
+        )
+        result.append(persona)
+
+    return result
+
+
 def load_population(source: str, n: int, seed: int = 42) -> list[PersonaDefinition]:
     """Load large open persona datasets and sample demographically.
 
     Supports:
     - "nemotron-usa" → NVIDIA Nemotron-Personas-USA (6M personas, US Census grounded)
     - "finepersonas" → Argilla FinePersonas-v0.1 (21M personas)
+    - "personas-de" → Locally generated German consumer personas (data/personas-de/)
     - "hf:DATASET_ID:COLUMN" → Generic HuggingFace dataset loader
 
     In mock mode (MARKET_SWARM_MOCK=1), generates deterministic consumer personas
@@ -350,6 +441,7 @@ def load_population(source: str, n: int, seed: int = 42) -> list[PersonaDefiniti
     Examples:
         >>> personas = load_population("nemotron-usa", 100)
         >>> personas = load_population("finepersonas", 50, seed=123)
+        >>> personas = load_population("personas-de", 100)  # From local data/personas-de/
         >>> personas = load_population("hf:myorg/my-dataset:persona_col", 25)
         >>> # In mock mode: no downloads
         >>> os.environ["MARKET_SWARM_MOCK"] = "1"
@@ -357,7 +449,7 @@ def load_population(source: str, n: int, seed: int = 42) -> list[PersonaDefiniti
     """
     # Validate source format first, regardless of mock mode
     is_hf_source = source.startswith("hf:")
-    is_known_source = source in ("nemotron-usa", "finepersonas") or is_hf_source
+    is_known_source = source in ("nemotron-usa", "finepersonas", "personas-de") or is_hf_source
 
     if is_hf_source:
         # Validate hf: format
@@ -367,7 +459,7 @@ def load_population(source: str, n: int, seed: int = 42) -> list[PersonaDefiniti
     elif not is_known_source:
         raise ValueError(
             f"Unknown population source: {source}. "
-            f"Supported: nemotron-usa, finepersonas, hf:dataset_id:column"
+            f"Supported: nemotron-usa, finepersonas, personas-de, hf:dataset_id:column"
         )
 
     if _validate_mock_mode():
@@ -377,6 +469,8 @@ def load_population(source: str, n: int, seed: int = 42) -> list[PersonaDefiniti
         return _load_nemotron_usa(n, seed)
     elif source == "finepersonas":
         return _load_finepersonas(n, seed)
+    elif source == "personas-de":
+        return _load_personas_de(n, seed)
     elif is_hf_source:
         _, dataset_id, column = source.split(":", 2)
         return _load_hf_dataset(dataset_id, column, n, seed)
