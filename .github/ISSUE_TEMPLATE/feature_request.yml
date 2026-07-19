@@ -1,0 +1,42 @@
+name: Feature request
+description: Suggest an idea for Market Swarm
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the feature or improvement you'd like to see.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: |
+        What's the problem you're trying to solve? Or what workflow would this feature enable?
+      placeholder: "Currently, I can only export results as JSON. It would be helpful to export as PPTX because..."
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How would you solve this? Be specific.
+      placeholder: |
+        Add an `--export pptx` flag that generates a formatted slide deck with:
+        - One slide per persona showing their scores and top objections
+        - Channel comparison charts
+        - Competitive analysis
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What else could solve this problem?
+      placeholder: |
+        - Use the API and build custom PPTX generation client-side
+        - Export JSON and process with pandoc
+  - type: markdown
+    attributes:
+      value: |
+        **Note:** Feature requests specific to an industry pack or persona design should be discussed in [Discussions](https://github.com/rockywuest/market-swarm/discussions) first. We prioritize features that improve the core simulation engine and validation methodology.

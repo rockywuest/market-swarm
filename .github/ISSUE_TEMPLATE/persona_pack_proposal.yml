@@ -1,0 +1,80 @@
+name: Persona pack proposal
+description: Propose a new industry pack or major persona additions
+title: "[Pack Proposal] "
+labels: ["pack-proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Proposing a new industry pack or significant persona additions? Start here.
+
+        We prioritize packs that encode **real industry economics** (margin floors, capacity constraints, regulatory requirements), not generic buyer archetypes. See [CONTRIBUTING.md](../CONTRIBUTING.md#contributing-new-industry-packs) for quality standards.
+  - type: textarea
+    id: industry
+    attributes:
+      label: Industry
+      description: What industry or vertical?
+      placeholder: "Packaging manufacturing (B2B suppliers to FMCG brands)"
+    validations:
+      required: true
+  - type: textarea
+    id: personas_sketch
+    attributes:
+      label: Personas sketch (roles, not names yet)
+      description: |
+        What buyer roles will the pack cover? Aim for 8–12 personas covering different perspectives.
+      placeholder: |
+        1. Procurement manager (total-cost-of-ownership focused)
+        2. Plant manager / operations (production constraints, uptime)
+        3. Quality/compliance officer (regulatory, traceability)
+        4. Finance controller (capex vs opex, budget authority)
+        5. Supply chain director (lead times, geographic sourcing)
+        6. C-suite executive (strategic partnerships, competitive position)
+        7. ...
+    validations:
+      required: true
+  - type: textarea
+    id: economics
+    attributes:
+      label: Industry economics
+      description: |
+        What are the key business drivers and thresholds in this industry?
+        E.g., margin floors, capacity utilization, compliance costs, cycle times.
+      placeholder: |
+        - Minimum procurement volume: 10,000 units/order
+        - Gross margin floor: 18–22% (thin market, high competition)
+        - Lead time: 12 weeks standard, 6 weeks expedited (+15% surcharge)
+        - Regulatory: FDA compliance mandatory (pharma), ISO 9001/13485
+        - Switching costs: $50K+ requalification per supplier
+    validations:
+      required: true
+  - type: textarea
+    id: expertise
+    attributes:
+      label: Your expertise
+      description: |
+        How do you know this industry? (Work experience, interviews, published data, etc.)
+      placeholder: |
+        - 8 years procurement at Fortune 500 beverage company
+        - Conducted interviews with 5 packaging suppliers and 3 in-house procurement teams
+        - References: Industry reports from [X], [Y]
+    validations:
+      required: true
+  - type: textarea
+    id: data_sources
+    attributes:
+      label: Data sources for grounding personas
+      description: |
+        What public, citable sources will ground persona thresholds and decision criteria?
+        (Industry reports, regulatory guidance, academic research, public interviews, etc.)
+      placeholder: |
+        - Gartner supply-chain reports
+        - FDA CFR Title 21 (pharma packaging requirements)
+        - Interviews with supply-chain directors (anonymized)
+        - ISM supply management benchmarks
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        **Next steps:** We'll review your proposal and discuss scope before you write persona YAML. Open this issue and we'll follow up in the comments.

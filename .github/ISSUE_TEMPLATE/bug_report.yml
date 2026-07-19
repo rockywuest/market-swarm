@@ -1,0 +1,85 @@
+name: Bug report
+description: Something is broken or doesn't work as expected
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a bug! Please provide as much detail as possible to help us debug.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What went wrong?
+      placeholder: "When I run simulate with X product, the evaluation crashes with..."
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: How do we reproduce the issue?
+      placeholder: |
+        1. Run: `python -m market_swarm simulate --product examples/oat-bar-protein.yaml`
+        2. ...
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should happen?
+      placeholder: "The simulation should complete and output a JSON file"
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What actually happens?
+      placeholder: "Error: KeyError 'evaluation_criteria' on line 142"
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: |
+        OS, Python version, and LLM provider. Use `python --version` and check your `.env`.
+      placeholder: |
+        - OS: macOS 13.5
+        - Python: 3.11.2
+        - LLM provider: Anthropic (claude-3-5-sonnet)
+        - Market Swarm version/branch: main@abc1234
+      value: |
+        - OS:
+        - Python version:
+        - LLM provider:
+        - Market Swarm version:
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error logs
+      description: Full error message and traceback. **Remove any API keys or secrets.**
+      placeholder: "Traceback (most recent call last): ..."
+      render: python
+  - type: markdown
+    attributes:
+      value: |
+        **Please remove API keys, personal data, and any sensitive information from logs before submitting.**
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I've removed API keys and secrets from the logs above
+          required: true
+        - label: I've provided a minimal example to reproduce the issue
+          required: false
