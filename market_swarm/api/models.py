@@ -10,6 +10,8 @@ from typing import Any, Optional
 
 from pydantic import BaseModel, Field
 
+from ..engine import DEFAULT_MODEL
+
 
 # --- Enums ---
 
@@ -28,7 +30,7 @@ class SimulationRequest(BaseModel):
     """Request body for POST /api/simulations."""
 
     product_yaml: str = Field(description="Full YAML content of the product definition")
-    model_name: str = Field(default="claude-sonnet-4-5", description="LLM model to use")
+    model_name: str = Field(default=DEFAULT_MODEL, description="LLM model to use")
     pack_override: Optional[str] = Field(default=None, description="Force a specific industry pack")
 
 

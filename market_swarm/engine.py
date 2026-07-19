@@ -147,10 +147,16 @@ def _get_client():
     raise RuntimeError(NO_API_KEY_MESSAGE)
 
 
+# Default model: configurable via env (MARKET_SWARM_MODEL, or MODEL), CLI --model,
+# or the API request's model_name — in ascending precedence.
+DEFAULT_MODEL = os.environ.get("MARKET_SWARM_MODEL") or os.environ.get("MODEL") or "claude-opus-4-8"
+
 # Map short model names to provider-specific model IDs
 OPENROUTER_MODELS = {
+    "claude-opus-4-8": "anthropic/claude-opus-4-8",
+    "claude-sonnet-5": "anthropic/claude-sonnet-5",
+    "claude-haiku-4-5": "anthropic/claude-haiku-4-5",
     "claude-sonnet-4-5": "anthropic/claude-sonnet-4-5",
-    "claude-sonnet-4-5-20250514": "anthropic/claude-sonnet-4-5-20250514",
     "gpt-4o": "openai/gpt-4o",
     "gpt-4o-mini": "openai/gpt-4o-mini",
 }
@@ -318,7 +324,7 @@ def evaluate_with_agent(
     persona,
     product: Product,
     focus_areas: list[str],
-    model: str = "claude-sonnet-4-5",
+    model: str = DEFAULT_MODEL,
 ) -> AgentResponse:
     """Run a single agent evaluation (synchronous — for CLI use)."""
     if mock_enabled():
@@ -353,7 +359,7 @@ def evaluate_with_agent(
 
 def run_simulation(
     product_path: str,
-    model: str = "claude-sonnet-4-5",
+    model: str = DEFAULT_MODEL,
     verbose: bool = True,
     pack_override: str | None = None,
 ) -> SimulationResult:
@@ -413,7 +419,7 @@ async def evaluate_with_agent_async(
     persona,
     product: Product,
     focus_areas: list[str],
-    model: str = "claude-sonnet-4-5",
+    model: str = DEFAULT_MODEL,
     *,
     semaphore: asyncio.Semaphore | None = None,
 ) -> AgentResponse:
@@ -495,7 +501,7 @@ async def evaluate_with_agent_async(
 
 async def run_simulation_async(
     product_path: str,
-    model: str = "claude-sonnet-4-5",
+    model: str = DEFAULT_MODEL,
     pack_override: str | None = None,
     max_concurrent: int = DEFAULT_MAX_CONCURRENT,
     on_progress: Optional[callable] = None,

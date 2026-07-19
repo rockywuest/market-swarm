@@ -3,7 +3,7 @@
 import argparse
 import json
 
-from .engine import run_simulation, print_results
+from .engine import DEFAULT_MODEL, print_results, run_simulation
 
 
 def main():
@@ -15,7 +15,9 @@ def main():
     # simulate command
     sim_parser = subparsers.add_parser("simulate", help="Run a product simulation")
     sim_parser.add_argument("--product", "-p", required=True, help="Path to product YAML")
-    sim_parser.add_argument("--model", "-m", default="claude-sonnet-4-5", help="LLM model to use")
+    sim_parser.add_argument(
+        "--model", "-m", default=DEFAULT_MODEL, help=f"LLM model to use (default: {DEFAULT_MODEL})"
+    )
     sim_parser.add_argument("--output", "-o", help="Save results to JSON file")
     sim_parser.add_argument("--quiet", "-q", action="store_true", help="Minimal output")
     sim_parser.add_argument(
