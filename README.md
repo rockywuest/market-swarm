@@ -89,6 +89,13 @@ Depth over breadth: the FMCG pack is the flagship — it encodes actual trade
 economics (margin floors, shelf-space productivity in EUR per linear meter,
 cannibalization logic, promo mechanics), not generic "retail buyer" prompts.
 
+**Scaling beyond expert panels:** for consumer swarms of hundreds or
+thousands of demographically weighted personas, see
+[`docs/persona-sources.md`](docs/persona-sources.md) — a curated, license-aware
+guide to open persona datasets (Nemotron-Personas, FinePersonas), official
+statistics for census-grounded generation, and why there is a
+Germany/EU-shaped gap this project intends to fill.
+
 ## Product definition
 
 ```yaml
