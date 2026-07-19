@@ -47,7 +47,9 @@ For real simulations, add one LLM key (`cp .env.example .env`, then set
 python server.py           # FastAPI + static dashboard on :8000
 ```
 
-Pick a pack, run a simulation, watch the swarm score your product.
+Pick a pack, run a simulation, watch the swarm score your product:
+
+![Dashboard: simulation results with per-agent scores and objections](docs/assets/dashboard.png)
 
 ---
 
@@ -104,6 +106,17 @@ thousands of demographically weighted personas, see
 guide to open persona datasets (Nemotron-Personas, FinePersonas), official
 statistics for census-grounded generation, and why there is a
 Germany/EU-shaped gap this project intends to fill.
+
+## How this compares
+
+Honest positioning against the projects you might already know:
+
+| | Focus | What market-swarm does differently |
+|---|---|---|
+| [TinyTroupe](https://github.com/microsoft/TinyTroupe) (Microsoft) | General persona simulation for brainstorming & business insights | Domain depth over generality: personas encode trade economics (margin floors, cannibalization, shelf productivity), organized as industry packs, with a calibration score against official statistics |
+| [CAMEL-AI OASIS](https://github.com/camel-ai/oasis) / generative agents | Social dynamics at scale (feeds, networks, up to 1M agents) | Simulates *market decisions* (would a buyer list it? would a consumer buy it?), not social interaction |
+| [EDSL](https://github.com/expectedparrot/edsl) (Expected Parrot) | General survey & experiment framework | Opinionated end-to-end pipeline: product YAML in → scored verdicts, objections, PDF/PPTX out — plus hand-built expert personas you'd otherwise write yourself |
+| Synthetic-consumer SaaS tools | Closed platforms, "trust us" realism | MIT-licensed, runs offline in 2 minutes, and **publishes its calibration methodology and scores** — including where it's weak |
 
 ## Product definition
 
