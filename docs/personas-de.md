@@ -300,22 +300,24 @@ Questions about methodology or data? Open an issue or email [maintainers].
 
 ## v0.1 Calibration Results (measured, not claimed)
 
-First real calibration run (2026-07-19): 100 sampled personas × 8 questions
-from `data/calibration/consumer_basics_eu.yaml`, 800 LLM calls, 8 unparsable
-answers skipped. Full report: `data/personas-de/calibration_v0.1.json`.
+Release calibration run (2026-07-19): 200 sampled personas × 8 questions
+from `data/calibration/consumer_basics_eu.yaml`, 1,600 LLM calls, 19
+unparsable answers skipped. Full report:
+`data/personas-de/calibration_v0.1.json`. (An n=100 pre-run scored 78.6% —
+the result is stable across sample sizes.)
 
-**Calibration Score: 78.6%** (100 × (1 − mean TVD))
+**Calibration Score: 79.8%** (100 × (1 − mean TVD))
 
 | Question | TVD | Reading |
 |---|---|---|
-| Grocery channel preference | 0.100 | ✅ strong — dimension is conditioned in the sampler |
-| Organic purchase frequency | 0.075 | ✅ strong — conditioned |
-| Sustainable label influence | 0.130 | good |
-| Online grocery adoption | 0.150 | good |
-| Price vs quality priority | 0.200 | fair |
-| Smoking status | 0.230 | fair — not conditioned |
-| Household food budget share | 0.277 | weak — needs EVS-based conditioning (roadmap) |
-| Preferred product information | 0.552 | ❌ weak — LLM attitude bias, not demographic |
+| Grocery channel preference | 0.080 | ✅ strong — dimension is conditioned in the sampler |
+| Organic purchase frequency | 0.078 | ✅ strong — conditioned |
+| Sustainable label influence | 0.110 | good |
+| Online grocery adoption | 0.125 | good |
+| Price vs quality priority | 0.170 | fair |
+| Smoking status | 0.245 | fair — not conditioned |
+| Household food budget share | 0.302 | weak — needs EVS-based conditioning (roadmap) |
+| Preferred product information | 0.503 | ❌ weak — LLM attitude bias, not demographic |
 
 The pattern is exactly what the methodology predicts: dimensions explicitly
 grounded in the demographic records track reality well; free attitudes
