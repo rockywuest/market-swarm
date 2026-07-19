@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Swarm — Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --accent: #2563eb;
+            --accent-dark: #1e3a5f;
+            --accent-light: #3b82f6;
+            --warm: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --slate-900: #0f172a;
+            --slate-700: #334155;
+            --slate-500: #64748b;
+            --slate-300: #cbd5e1;
+            --slate-100: #f1f5f9;
+            --bg: #f8fafc;
+            --card-shadow: 0 1px 3px rgba(15,23,42,0.08), 0 4px 14px rgba(15,23,42,0.04);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--slate-900); line-height: 1.5; }
+
+        header {
+            background: linear-gradient(135deg, var(--slate-900) 0%, var(--accent-dark) 100%);
+            color: white; padding: 2rem 2rem 1.5rem;
+        }
+        .header-row { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.5px; }
+        .logo span { color: var(--warm); }
+        .header-sub { font-size: 0.85rem; opacity: 0.7; margin-top: 0.25rem; }
+        .header-stats { display: flex; gap: 2rem; text-align: center; }
+        .stat-num { font-size: 2rem; font-weight: 900; }
+        .stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.6; }
+
+        main { max-width: 1400px; margin: 0 auto; padding: 1.5rem 2rem 3rem; }
+        .section-title { font-size: 1.1rem; font-weight: 700; margin: 1.5rem 0 0.75rem; color: var(--slate-700); }
+
+        .packs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
+        .pack-card {
+            background: white; border-radius: 12px; padding: 1.25rem; box-shadow: var(--card-shadow);
+            border-left: 4px solid var(--accent); transition: transform 0.15s;
+        }
+        .pack-card:hover { transform: translateY(-2px); }
+        .pack-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+        .pack-name { font-weight: 700; font-size: 1rem; }
+        .pack-badge {
+            font-size: 0.65rem; padding: 2px 8px; border-radius: 99px;
+            background: var(--slate-100); color: var(--slate-500); font-weight: 600;
+        }
+        .pack-desc { font-size: 0.8rem; color: var(--slate-500); margin-bottom: 0.75rem; }
+        .pack-personas { display: flex; flex-wrap: wrap; gap: 4px; }
+        .persona-chip {
+            font-size: 0.65rem; padding: 2px 6px; border-radius: 4px;
+            background: var(--slate-100); color: var(--slate-700);
+        }
+
+        .sim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 1rem; }
+        .sim-card {
+            background: white; border-radius: 12px; padding: 1.25rem; box-shadow: var(--card-shadow);
+            transition: transform 0.15s;
+        }
+        .sim-card:hover { transform: translateY(-2px); }
+        .sim-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
+        .sim-product { font-weight: 700; font-size: 1rem; }
+        .sim-brand { font-size: 0.8rem; color: var(--slate-500); }
+        .sim-type-badge {
+            font-size: 0.6rem; padding: 3px 8px; border-radius: 99px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        .sim-scores { display: flex; gap: 1rem; margin-bottom: 0.75rem; }
+        .score-box { text-align: center; flex: 1; padding: 0.5rem; border-radius: 8px; background: var(--slate-100); }
+        .score-value { font-size: 1.5rem; font-weight: 900; }
+        .score-label { font-size: 0.65rem; color: var(--slate-500); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .sim-agents { margin-bottom: 0.5rem; }
+        .agent-bar { display: flex; align-items: center; gap: 0.5rem; padding: 3px 0; font-size: 0.78rem; }
+        .agent-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--slate-700); }
+        .agent-score-bar { width: 120px; height: 6px; border-radius: 3px; background: var(--slate-100); overflow: hidden; }
+        .agent-score-fill { height: 100%; border-radius: 3px; }
+        .agent-score-num { width: 32px; text-align: right; font-weight: 600; font-size: 0.75rem; }
+
+        .sim-feedback { border-top: 1px solid var(--slate-100); padding-top: 0.5rem; margin-top: 0.5rem; }
+        .feedback-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.25rem; }
+        .feedback-item { font-size: 0.75rem; color: var(--slate-700); padding: 2px 0; line-height: 1.4; }
+
+        .comparison-section { margin-top: 1.5rem; }
+        .chart-container { background: white; border-radius: 12px; padding: 1.25rem; box-shadow: var(--card-shadow); }
+        .chart-wrap { height: 300px; }
+
+        footer {
+            text-align: center; padding: 1.5rem; font-size: 0.75rem; color: var(--slate-500);
+            border-top: 1px solid var(--slate-100); margin-top: 2rem; max-width: 1400px; margin: 2rem auto 0;
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--slate-300); border-radius: 12px; padding: 1rem; text-align: center;
+            color: var(--slate-500); font-size: 0.8rem; margin-bottom: 1rem; transition: all 0.2s; cursor: pointer;
+        }
+        .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: #eff6ff; color: var(--accent); }
+        .upload-zone input { display: none; }
+
+        @media (max-width: 768px) {
+            .header-stats { gap: 1rem; }
+            .stat-num { font-size: 1.4rem; }
+            .sim-grid, .packs-grid { grid-template-columns: 1fr; }
+            main { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-row">
+        <div>
+            <div class="logo">Market <span>Swarm</span></div>
+            <div class="header-sub">AI-powered market simulation for product launches</div>
+        </div>
+        <div class="header-stats">
+            <div><div class="stat-num" id="stat-packs">-</div><div class="stat-label">Industry Packs</div></div>
+            <div><div class="stat-num" id="stat-personas">-</div><div class="stat-label">Personas</div></div>
+            <div><div class="stat-num" id="stat-sims">-</div><div class="stat-label">Simulations</div></div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="api-bar" id="api-bar" style="display:flex;gap:0.5rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap">
+        <input type="text" id="api-key-input" placeholder="API Key (optional, empty = dev mode)"
+               style="flex:1;min-width:200px;padding:0.4rem 0.75rem;border:1px solid var(--slate-300);border-radius:8px;font-size:0.8rem;font-family:inherit">
+        <button id="btn-refresh" onclick="loadFromAPI()"
+                style="padding:0.4rem 1rem;background:var(--accent);color:white;border:none;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:inherit">
+            Refresh
+        </button>
+        <span id="api-status" style="font-size:0.75rem;color:var(--slate-500)"></span>
+    </div>
+
+    <div class="upload-zone" id="upload-zone">
+        Drag product YAML or JSON results here, or <strong>click</strong> to load
+        <input type="file" id="file-input" accept=".json,.yaml,.yml" multiple>
+    </div>
+
+    <div class="section-title">Industry Packs</div>
+    <div class="packs-grid" id="packs-grid"></div>
+
+    <div class="section-title">Simulation Results</div>
+    <div class="sim-grid" id="sim-grid"></div>
+
+    <div class="comparison-section">
+        <div class="section-title">Score Comparison Across All Simulations</div>
+        <div class="chart-container">
+            <div class="chart-wrap"><canvas id="comparisonChart"></canvas></div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    Notice: All results were generated by AI simulation and do not constitute empirical market research. All persona reactions are fictional.
+    <br>Market Swarm — Open Source AI Product Launch Simulator
+</footer>
+
+<script>
+const PACK_COLORS = { fmcg: '#2563eb', b2b_saas: '#8b5cf6', pharma: '#10b981', automotive: '#f59e0b', finance: '#ef4444', realestate: '#6366f1', retail: '#ec4899', energy: '#14b8a6' };
+const PACK_BADGE_STYLES = {
+    fmcg: 'background:#dbeafe;color:#1e40af',
+    b2b_saas: 'background:#ede9fe;color:#5b21b6',
+    pharma: 'background:#d1fae5;color:#065f46',
+};
+
+let overview = { packs: [], simulations: [] };
+
+function el(tag, attrs, children) {
+    const e = document.createElement(tag);
+    if (attrs) Object.entries(attrs).forEach(([k, v]) => {
+        if (k === 'style') e.setAttribute('style', v);
+        else if (k === 'className') e.className = v;
+        else if (k === 'title') e.title = v;
+        else e[k] = v;
+    });
+    if (typeof children === 'string') e.textContent = children;
+    else if (Array.isArray(children)) children.forEach(c => { if (c) e.appendChild(c); });
+    return e;
+}
+
+function scoreColor(s) { return s >= 7 ? '#10b981' : s >= 5 ? '#f59e0b' : '#ef4444'; }
+
+function renderHeader() {
+    const totalPersonas = overview.packs.reduce((s, p) => s + p.persona_count, 0);
+    document.getElementById('stat-packs').textContent = overview.packs.length;
+    document.getElementById('stat-personas').textContent = totalPersonas;
+    document.getElementById('stat-sims').textContent = overview.simulations.length;
+}
+
+function renderPacks() {
+    const grid = document.getElementById('packs-grid');
+    grid.replaceChildren();
+    overview.packs.forEach(p => {
+        const color = PACK_COLORS[p.product_type] || '#64748b';
+        const card = el('div', { className: 'pack-card', style: 'border-left-color:' + color });
+
+        const header = el('div', { className: 'pack-header' });
+        header.appendChild(el('div', { className: 'pack-name' }, p.display_name));
+        header.appendChild(el('div', { className: 'pack-badge' }, 'v' + p.version + ' \u00b7 ' + p.persona_count + ' Personas'));
+        card.appendChild(header);
+
+        card.appendChild(el('div', { className: 'pack-desc' }, p.description));
+
+        const chips = el('div', { className: 'pack-personas' });
+        p.personas.forEach(pr => {
+            const label = pr.name + (pr.retailer ? ' (' + pr.retailer + ')' : '');
+            chips.appendChild(el('span', { className: 'persona-chip', title: pr.type }, label));
+        });
+        card.appendChild(chips);
+        grid.appendChild(card);
+    });
+}
+
+function renderSimulations() {
+    const grid = document.getElementById('sim-grid');
+    grid.replaceChildren();
+
+    overview.simulations.forEach(sim => {
+        const rateLabel = sim.product_type === 'b2b_saas' ? 'Adoption' : sim.product_type === 'pharma' ? 'Recommendation' : 'Listing';
+        const responses = sim.responses || [];
+        const card = el('div', { className: 'sim-card' });
+
+        // Top row
+        const top = el('div', { className: 'sim-top' });
+        const info = el('div');
+        info.appendChild(el('div', { className: 'sim-product' }, sim.product_name));
+        info.appendChild(el('div', { className: 'sim-brand' }, sim.product_brand));
+        top.appendChild(info);
+        const badge = el('span', { className: 'sim-type-badge', style: PACK_BADGE_STYLES[sim.product_type] || '' }, sim.product_type.replace('_', ' '));
+        top.appendChild(badge);
+        card.appendChild(top);
+
+        // Scores
+        const scores = el('div', { className: 'sim-scores' });
+        [
+            [sim.avg_score, 'Avg Score', scoreColor(sim.avg_score)],
+            [sim.listing_rate + '%', rateLabel + '-Rate', scoreColor(sim.listing_rate / 10)],
+            [sim.agent_count, 'Agents', '#2563eb'],
+        ].forEach(([val, label, color]) => {
+            const box = el('div', { className: 'score-box' });
+            box.appendChild(el('div', { className: 'score-value', style: 'color:' + color }, String(val)));
+            box.appendChild(el('div', { className: 'score-label' }, label));
+            scores.appendChild(box);
+        });
+        card.appendChild(scores);
+
+        // Agent bars
+        const agents = el('div', { className: 'sim-agents' });
+        responses.slice(0, 6).forEach(r => {
+            const bar = el('div', { className: 'agent-bar' });
+            const icon = r.would_list ? '\u2713 ' : '\u2717 ';
+            bar.appendChild(el('span', { className: 'agent-name' }, icon + r.agent_name));
+
+            const barOuter = el('div', { className: 'agent-score-bar' });
+            const barFill = el('div', { className: 'agent-score-fill', style: 'width:' + (r.score * 10) + '%;background:' + scoreColor(r.score) });
+            barOuter.appendChild(barFill);
+            bar.appendChild(barOuter);
+
+            bar.appendChild(el('span', { className: 'agent-score-num', style: 'color:' + scoreColor(r.score) }, String(r.score)));
+            agents.appendChild(bar);
+        });
+        if (responses.length > 6) {
+            agents.appendChild(el('div', { style: 'font-size:0.7rem;color:var(--slate-500);padding-top:2px' }, '+' + (responses.length - 6) + ' more agents'));
+        }
+        card.appendChild(agents);
+
+        // Feedback
+        if (sim.top_objections && sim.top_objections.length) {
+            const fb = el('div', { className: 'sim-feedback' });
+            fb.appendChild(el('div', { className: 'feedback-title', style: 'color:var(--danger)' }, 'Top Objections'));
+            sim.top_objections.slice(0, 2).forEach(o => {
+                const text = o.length > 120 ? o.substring(0, 120) + '...' : o;
+                fb.appendChild(el('div', { className: 'feedback-item' }, '\u2022 ' + text));
+            });
+            card.appendChild(fb);
+        }
+        grid.appendChild(card);
+    });
+}
+
+let compChart = null;
+function renderComparisonChart() {
+    if (overview.simulations.length === 0) return;
+    if (compChart) compChart.destroy();
+
+    const labels = overview.simulations.map(s => s.product_name);
+    const scores = overview.simulations.map(s => s.avg_score);
+    const colors = overview.simulations.map(s => PACK_COLORS[s.product_type] || '#64748b');
+
+    compChart = new Chart(document.getElementById('comparisonChart'), {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Avg Score',
+                data: scores,
+                backgroundColor: colors.map(c => c + '99'),
+                borderColor: colors,
+                borderWidth: 2,
+                borderRadius: 8,
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, max: 10, grid: { color: 'rgba(100,116,139,0.1)' } },
+                x: { ticks: { font: { size: 11 } } }
+            }
+        }
+    });
+}
+
+function renderAll() {
+    renderHeader();
+    renderPacks();
+    renderSimulations();
+    renderComparisonChart();
+}
+
+// --- API helpers ---
+
+function apiHeaders() {
+    const key = document.getElementById('api-key-input').value.trim();
+    const h = { 'Content-Type': 'application/json' };
+    if (key) h['X-API-Key'] = key;
+    return h;
+}
+
+function setStatus(msg, isError) {
+    const el = document.getElementById('api-status');
+    el.textContent = msg;
+    el.style.color = isError ? 'var(--danger)' : 'var(--success)';
+}
+
+// --- Load data from API ---
+
+async function loadFromAPI() {
+    setStatus('Loading...', false);
+    try {
+        // Fetch packs + personas
+        const packsRes = await fetch('/api/packs', { headers: apiHeaders() });
+        if (!packsRes.ok) throw new Error('Packs: ' + packsRes.status);
+        const packs = await packsRes.json();
+
+        // Fetch personas for each pack
+        const packsWithPersonas = await Promise.all(packs.map(async pack => {
+            const pRes = await fetch('/api/packs/' + pack.product_type + '/personas', { headers: apiHeaders() });
+            const personas = pRes.ok ? await pRes.json() : [];
+            return { ...pack, personas };
+        }));
+
+        overview.packs = packsWithPersonas;
+
+        // Fetch completed simulations
+        const simsRes = await fetch('/api/simulations', { headers: apiHeaders() });
+        if (simsRes.ok) {
+            const jobs = await simsRes.json();
+            const completedJobs = jobs.filter(j => j.status === 'completed');
+
+            // Load results for each completed job
+            const simResults = await Promise.all(completedJobs.map(async job => {
+                const rRes = await fetch('/api/results/' + job.job_id, { headers: apiHeaders() });
+                if (!rRes.ok) return null;
+                const data = await rRes.json();
+                return {
+                    job_id: job.job_id,
+                    product_name: data.product?.name || job.product_name,
+                    product_brand: data.product?.brand || '',
+                    product_type: data.product?.product_type || job.pack_type,
+                    avg_score: Math.round((data.avg_score || 0) * 10) / 10,
+                    listing_rate: Math.round((data.listing_rate || 0) * 100),
+                    agent_count: (data.responses || []).length,
+                    top_objections: (data.top_objections || []).slice(0, 3),
+                    top_suggestions: (data.top_suggestions || []).slice(0, 3),
+                    responses: data.responses || [],
+                    channel_scores: data.channel_scores || {},
+                };
+            }));
+            // Merge API results (dedup by job_id)
+            simResults.filter(Boolean).forEach(sim => {
+                if (!overview.simulations.find(s => s.job_id === sim.job_id)) {
+                    overview.simulations.push(sim);
+                }
+            });
+        }
+
+        renderAll();
+        setStatus(overview.packs.length + ' packs, ' + overview.simulations.length + ' simulations', false);
+    } catch (err) {
+        setStatus('API error: ' + err.message, true);
+        console.error('API load error:', err);
+    }
+}
+
+// --- Submit YAML for simulation ---
+
+async function submitYAML(yamlContent) {
+    setStatus('Starting simulation...', false);
+    try {
+        const res = await fetch('/api/simulations', {
+            method: 'POST',
+            headers: apiHeaders(),
+            body: JSON.stringify({ product_yaml: yamlContent }),
+        });
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.detail || res.statusText);
+        }
+        const job = await res.json();
+        setStatus('Job started: ' + job.job_id.substring(0, 8) + '...', false);
+        pollJob(job.job_id);
+    } catch (err) {
+        setStatus('Error: ' + err.message, true);
+    }
+}
+
+async function pollJob(jobId) {
+    const poll = async () => {
+        try {
+            const res = await fetch('/api/simulations/' + jobId, { headers: apiHeaders() });
+            if (!res.ok) return;
+            const job = await res.json();
+            if (job.status === 'running') {
+                const p = job.progress || {};
+                setStatus('Running: ' + (p.completed || 0) + '/' + (p.total || '?') + ' agents...', false);
+                setTimeout(poll, 1500);
+            } else if (job.status === 'completed') {
+                setStatus('Complete! Loading results...', false);
+                await loadFromAPI();
+            } else if (job.status === 'failed') {
+                setStatus('Failed: ' + (job.error || 'unknown error'), true);
+            } else {
+                setTimeout(poll, 1000);
+            }
+        } catch (err) {
+            setStatus('Poll error: ' + err.message, true);
+        }
+    };
+    setTimeout(poll, 1000);
+}
+
+// --- File upload (JSON results + YAML products) ---
+
+function handleFiles(files) {
+    Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            const content = e.target.result;
+            // YAML file → submit as simulation
+            if (file.name.endsWith('.yaml') || file.name.endsWith('.yml')) {
+                submitYAML(content);
+                return;
+            }
+            // JSON file → load as result
+            if (file.name.endsWith('.json')) {
+                try {
+                    const data = JSON.parse(content);
+                    if (data.product && data.responses) {
+                        const sim = {
+                            file: file.name,
+                            product_name: data.product.name,
+                            product_brand: data.product.brand,
+                            product_type: data.product.product_type || 'fmcg',
+                            avg_score: Math.round(data.avg_score * 10) / 10,
+                            listing_rate: Math.round(data.listing_rate * 100),
+                            agent_count: data.responses.length,
+                            top_objections: (data.top_objections || []).slice(0, 3),
+                            top_suggestions: (data.top_suggestions || []).slice(0, 3),
+                            responses: data.responses,
+                            channel_scores: data.channel_scores || {},
+                        };
+                        if (!overview.simulations.find(s => s.product_name === sim.product_name && s.product_brand === sim.product_brand)) {
+                            overview.simulations.push(sim);
+                        }
+                        renderAll();
+                    }
+                } catch (err) { console.error('Parse error:', err); }
+            }
+        };
+        reader.readAsText(file);
+    });
+}
+
+const zone = document.getElementById('upload-zone');
+const input = document.getElementById('file-input');
+zone.addEventListener('click', () => input.click());
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+input.addEventListener('change', e => handleFiles(e.target.files));
+
+// Persist API key in localStorage
+const apiKeyInput = document.getElementById('api-key-input');
+apiKeyInput.value = localStorage.getItem('ms_api_key') || '';
+apiKeyInput.addEventListener('input', () => localStorage.setItem('ms_api_key', apiKeyInput.value));
+
+// Init — try API first, fall back to static sample-result.json
+async function init() {
+    try {
+        const healthRes = await fetch('/health');
+        if (healthRes.ok) {
+            await loadFromAPI();
+            return;
+        }
+    } catch (e) { /* API not available */ }
+    // Fallback: load static sample-result.json
+    try {
+        const res = await fetch('./sample-result.json');
+        if (res.ok) {
+            const data = await res.json();
+            // Convert SimulationResult format to overview format
+            if (data.product && data.responses) {
+                overview.simulations = [{
+                    product_name: data.product.name,
+                    product_brand: data.product.brand,
+                    product_type: data.product.product_type || 'fmcg',
+                    avg_score: Math.round(data.avg_score * 10) / 10,
+                    listing_rate: Math.round(data.listing_rate * 100),
+                    agent_count: data.responses.length,
+                    top_objections: (data.top_objections || []).slice(0, 3),
+                    top_suggestions: (data.top_suggestions || []).slice(0, 3),
+                    responses: data.responses,
+                    channel_scores: data.channel_scores || {},
+                }];
+            }
+        }
+    } catch (e) { console.warn('No sample-result.json found'); }
+    renderAll();
+}
+init();
+</script>
+</body>
+</html>

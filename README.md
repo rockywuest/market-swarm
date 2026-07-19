@@ -1,5 +1,10 @@
 # Market Swarm
 
+[![CI](https://github.com/rockywuest/market-swarm/actions/workflows/ci.yml/badge.svg)](https://github.com/rockywuest/market-swarm/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](pyproject.toml)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
 **Simulate how the market will react to your product — before you launch it.**
 
 Market Swarm runs your product concept past a swarm of LLM-powered personas:
@@ -12,6 +17,10 @@ would otherwise surface months later in real negotiations.
 > that makes your empirical research (and your launch) sharper.
 > **What this is not:** a replacement for real market research.
 > See [Limitations & Validation](#limitations--validation).
+
+![market-swarm demo — 12 personas evaluate a product](docs/assets/demo.svg)
+
+▶ **[Live results demo](https://rockywuest.github.io/market-swarm/demo/)** — no install needed.
 
 ---
 
@@ -140,6 +149,15 @@ positive or negative.
   employers ("a leading hard-discount chain"), never real companies or
   real employees.
 - **Product liability** — results are labeled simulation, never prediction.
+
+## Contributing
+
+The most valuable contributions, in order: **validation results from real
+launches** (see [docs/validation.md](docs/validation.md)), calibration
+question sets with citable reference statistics, personas and industry packs
+with real domain depth. Start with [CONTRIBUTING.md](CONTRIBUTING.md) or open
+a [Discussion](https://github.com/rockywuest/market-swarm/discussions).
+If this project is useful to you, a ⭐ helps others find it.
 
 ## Inspired by
 

@@ -1,0 +1,304 @@
+{
+  "product": {
+    "name": "NordOat Protein Bar",
+    "brand": "NordOat Foods",
+    "category": "Cereal Bar",
+    "subcategory": "Protein",
+    "product_type": "fmcg",
+    "attributes": {
+      "weight_g": 45,
+      "protein_g": 12.0,
+      "sugar_g": 4.5,
+      "fiber_g": 6.0,
+      "organic": false,
+      "vegan": true,
+      "gluten_free": false
+    },
+    "pricing": {
+      "rrp_eur": 1.49,
+      "trade_price_eur": 0.85,
+      "margin_retail_pct": 43.0
+    },
+    "claims": [
+      "High Protein (12g)",
+      "Low Sugar",
+      "Vegan",
+      "Nordic Oat Blend"
+    ],
+    "positioning": "Premium protein snack for active lifestyles. Competing with established premium brands at a value price point. Clean label, minimal ingredient list, oat-based formula (core competency). Targets fitness enthusiasts and health-conscious snackers across all channels.\n",
+    "target_channels": [
+      "discount",
+      "full_range",
+      "drugstore"
+    ],
+    "competitors": [
+      {
+        "name": "ProBar Elite",
+        "brand": "ProBar Elite",
+        "price_eur": 2.59,
+        "weight_g": 55,
+        "protein_g": 20.0,
+        "channel": "full_range, drugstore"
+      },
+      {
+        "name": "FitSnack Classic",
+        "brand": "FitSnack",
+        "price_eur": 1.29,
+        "weight_g": 45,
+        "protein_g": 10.0,
+        "channel": "discount, full_range"
+      },
+      {
+        "name": "PowerEdge Protein",
+        "brand": "PowerEdge",
+        "price_eur": 2.89,
+        "weight_g": 60,
+        "protein_g": 23.0,
+        "channel": "drugstore, online"
+      },
+      {
+        "name": "Grain Craft Flapjack",
+        "brand": "Grain Craft",
+        "price_eur": 1.99,
+        "weight_g": 65,
+        "protein_g": 8.0,
+        "channel": "full_range, drugstore"
+      }
+    ]
+  },
+  "responses": [
+    {
+      "agent_name": "Daniel Schmitz",
+      "agent_type": "category_manager_internal",
+      "retailer": null,
+      "score": 4.0,
+      "would_list": false,
+      "key_feedback": "NordOat Protein Bar does not clear my bar on cannibalization; as offered, I would pass.",
+      "objections": [
+        "Needs stronger evidence on scalability"
+      ],
+      "suggestions": [
+        "Sharpen the positioning on cannibalization before launch"
+      ],
+      "price_feedback": null,
+      "detailed_reasoning": "Mock evaluation (MARKET_SWARM_MOCK=1): deterministic sample output for demos — no LLM was called."
+    },
+    {
+      "agent_name": "Stephanie Kraus",
+      "agent_type": "category_manager_retail",
+      "retailer": null,
+      "score": 5.0,
+      "would_list": false,
+      "key_feedback": "NordOat Protein Bar does not clear my bar on category growth; as offered, I would pass.",
+      "objections": [
+        "Needs stronger evidence on logistics"
+      ],
+      "suggestions": [
+        "Sharpen the positioning on category growth before launch"
+      ],
+      "price_feedback": null,
+      "detailed_reasoning": "Mock evaluation (MARKET_SWARM_MOCK=1): deterministic sample output for demos — no LLM was called."
+    },
+    {
+      "agent_name": "Dr. Marco Richter",
+      "agent_type": "consumer_health",
+      "retailer": null,
+      "score": 8.2,
+      "would_list": true,
+      "key_feedback": "NordOat Protein Bar is a credible fit for my segment — protein per euro is where it wins. I would trial it under conditions.",
+      "objections": [
+        "Needs stronger evidence on convenience"
+      ],
+      "suggestions": [
+        "Sharpen the positioning on protein per euro before launch"
+      ],
+      "price_feedback": null,
+      "detailed_reasoning": "Mock evaluation (MARKET_SWARM_MOCK=1): deterministic sample output for demos — no LLM was called."
+    },
+    {
+      "agent_name": "Andreas Müller",
+      "agent_type": "consumer_organic",
+      "retailer": null,
+      "score": 6.5,
+      "would_list": true,
+      "key_feedback": "NordOat Protein Bar is a credible fit for my segment — origin is where it wins. I would trial it under conditions.",
+      "objections": [
+        "Needs stronger evidence on processing level"
+      ],
+      "suggestions": [
+        "Sharpen the positioning on origin before launch"
+      ],
+      "price_feedback": null,
+      "detailed_reasoning": "Mock evaluation (MARKET_SWARM_MOCK=1): deterministic sample output for demos — no LLM was called."
+    },
+    {
+      "agent_name": "Zeynep Arslan",
+      "agent_type": "consumer_price_sensitive",
+      "retailer": null,
+      "score": 6.7,
+      "would_list": true,
+      "key_feedback": "NordOat Protein Bar is a credible fit for my segment — vs private label is where it wins. I would trial it under conditions.",
+      "objections": [
+        "Needs stronger evidence on absolute price"
+      ],
+      "suggestions": [
+        "Sharpen the positioning on vs private label before launch"
+      ],
+      "price_feedback": null,
+      "detailed_reasoning": "Mock evaluation (MARKET_SWARM_MOCK=1): deterministic sample output for demos — no LLM was called."
+    },
+    {
+      "agent_name": "Jasmine Koch",
+      "agent_type": "consumer_trend",
+      "retailer": null,
+      "score": 8.8,
+      "would_list": true,
+      "key_feedback": "NordOat Protein Bar is a credible fit for my segment — brand personality is where it wins. I would trial it under conditions.",
+      "objections": [
+        "Needs stronger evidence on visual appeal"
+      ],
+      "suggestions": [
+        "Sharpen the positioning on brand personality before launch"
+      ],
+      "price_feedback": null,
+      "detailed_reasoning": "Mock evaluation (MARKET_SWARM_MOCK=1): deterministic sample output for demos — no LLM was called."
+    },
+    {
+      "agent_name": "Carolin Steiger",
+      "agent_type": "full_range_buyer",
+      "retailer": "a cooperative full-range grocer",
+      "score": 9.3,
+      "would_list": true,
+      "key_feedback": "NordOat Protein Bar is a credible fit for my segment — innovation is where it wins. I would trial it under conditions.",
+      "objections": [
+        "Needs stronger evidence on regional appeal"
+      ],
+      "suggestions": [
+        "Sharpen the positioning on innovation before launch"
+      ],
+      "price_feedback": null,
+      "detailed_reasoning": "Mock evaluation (MARKET_SWARM_MOCK=1): deterministic sample output for demos — no LLM was called."
+    },
+    {
+      "agent_name": "Silke Bergmann",
+      "agent_type": "drugstore_buyer",
+      "retailer": "a health-focused drugstore chain",
+      "score": 8.2,
+      "would_list": true,
+      "key_feedback": "NordOat Protein Bar is a credible fit for my segment — brand fit is where it wins. I would trial it under conditions.",
+      "objections": [
+        "Needs stronger evidence on packaging"
+      ],
+      "suggestions": [
+        "Sharpen the positioning on brand fit before launch"
+      ],
+      "price_feedback": null,
+      "detailed_reasoning": "Mock evaluation (MARKET_SWARM_MOCK=1): deterministic sample output for demos — no LLM was called."
+    },
+    {
+      "agent_name": "Henrik Albers",
+      "agent_type": "hard_discount_buyer",
+      "retailer": "a leading German hard-discount chain",
+      "score": 8.8,
+      "would_list": true,
+      "key_feedback": "NordOat Protein Bar is a credible fit for my segment — margin is where it wins. I would trial it under conditions.",
+      "objections": [
+        "Needs stronger evidence on simplicity"
+      ],
+      "suggestions": [
+        "Sharpen the positioning on margin before launch"
+      ],
+      "price_feedback": null,
+      "detailed_reasoning": "Mock evaluation (MARKET_SWARM_MOCK=1): deterministic sample output for demos — no LLM was called."
+    },
+    {
+      "agent_name": "Tobias Schneider",
+      "agent_type": "intl_discount_buyer",
+      "retailer": "an international hard-discount chain",
+      "score": 7.5,
+      "would_list": true,
+      "key_feedback": "NordOat Protein Bar is a credible fit for my segment — promotion fit is where it wins. I would trial it under conditions.",
+      "objections": [
+        "Needs stronger evidence on sustainability"
+      ],
+      "suggestions": [
+        "Sharpen the positioning on promotion fit before launch"
+      ],
+      "price_feedback": null,
+      "detailed_reasoning": "Mock evaluation (MARKET_SWARM_MOCK=1): deterministic sample output for demos — no LLM was called."
+    },
+    {
+      "agent_name": "Marcus Kern",
+      "agent_type": "premium_full_range_buyer",
+      "retailer": "a premium full-range grocer",
+      "score": 6.2,
+      "would_list": true,
+      "key_feedback": "NordOat Protein Bar is a credible fit for my segment — data backed is where it wins. I would trial it under conditions.",
+      "objections": [
+        "Needs stronger evidence on partnership potential"
+      ],
+      "suggestions": [
+        "Sharpen the positioning on data backed before launch"
+      ],
+      "price_feedback": null,
+      "detailed_reasoning": "Mock evaluation (MARKET_SWARM_MOCK=1): deterministic sample output for demos — no LLM was called."
+    },
+    {
+      "agent_name": "Frank Richter",
+      "agent_type": "soft_discount_buyer",
+      "retailer": "a regional discount chain in Northern Europe",
+      "score": 4.2,
+      "would_list": false,
+      "key_feedback": "NordOat Protein Bar does not clear my bar on regional fit; as offered, I would pass.",
+      "objections": [
+        "Needs stronger evidence on supply reliability"
+      ],
+      "suggestions": [
+        "Sharpen the positioning on regional fit before launch"
+      ],
+      "price_feedback": null,
+      "detailed_reasoning": "Mock evaluation (MARKET_SWARM_MOCK=1): deterministic sample output for demos — no LLM was called."
+    }
+  ],
+  "avg_score": 6.95,
+  "listing_rate": 0.75,
+  "top_objections": [
+    "Needs stronger evidence on scalability",
+    "Needs stronger evidence on logistics",
+    "Needs stronger evidence on convenience",
+    "Needs stronger evidence on processing level",
+    "Needs stronger evidence on absolute price",
+    "Needs stronger evidence on visual appeal",
+    "Needs stronger evidence on regional appeal",
+    "Needs stronger evidence on packaging",
+    "Needs stronger evidence on simplicity",
+    "Needs stronger evidence on sustainability"
+  ],
+  "top_suggestions": [
+    "Sharpen the positioning on cannibalization before launch",
+    "Sharpen the positioning on category growth before launch",
+    "Sharpen the positioning on protein per euro before launch",
+    "Sharpen the positioning on origin before launch",
+    "Sharpen the positioning on vs private label before launch",
+    "Sharpen the positioning on brand personality before launch",
+    "Sharpen the positioning on innovation before launch",
+    "Sharpen the positioning on brand fit before launch",
+    "Sharpen the positioning on margin before launch",
+    "Sharpen the positioning on promotion fit before launch"
+  ],
+  "channel_scores": {
+    "category_manager_internal": 4.0,
+    "category_manager_retail": 5.0,
+    "consumer_health": 8.2,
+    "consumer_organic": 6.5,
+    "consumer_price_sensitive": 6.7,
+    "consumer_trend": 8.8,
+    "a cooperative full-range grocer": 9.3,
+    "a health-focused drugstore chain": 8.2,
+    "a leading German hard-discount chain": 8.8,
+    "an international hard-discount chain": 7.5,
+    "a premium full-range grocer": 6.2,
+    "a regional discount chain in Northern Europe": 4.2
+  },
+  "disclaimer": "These results were generated by AI simulation and do not constitute empirical market research. All persona reactions are fictional and do not represent the actual positions of any company."
+}
