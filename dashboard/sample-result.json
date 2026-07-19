@@ -27,9 +27,9 @@
     ],
     "positioning": "Premium protein snack for active lifestyles. Competing with established premium brands at a value price point. Clean label, minimal ingredient list, oat-based formula (core competency). Targets fitness enthusiasts and health-conscious snackers across all channels.\n",
     "target_channels": [
-      "discounter",
-      "vollsortiment",
-      "drogerie"
+      "discount",
+      "full_range",
+      "drugstore"
     ],
     "competitors": [
       {
@@ -38,7 +38,7 @@
         "price_eur": 2.59,
         "weight_g": 55,
         "protein_g": 20.0,
-        "channel": "vollsortiment, drogerie"
+        "channel": "full_range, drugstore"
       },
       {
         "name": "FitSnack Classic",
@@ -46,7 +46,7 @@
         "price_eur": 1.29,
         "weight_g": 45,
         "protein_g": 10.0,
-        "channel": "discounter, vollsortiment"
+        "channel": "discount, full_range"
       },
       {
         "name": "PowerEdge Protein",
@@ -54,7 +54,7 @@
         "price_eur": 2.89,
         "weight_g": 60,
         "protein_g": 23.0,
-        "channel": "drogerie, online"
+        "channel": "drugstore, online"
       },
       {
         "name": "Grain Craft Flapjack",
@@ -62,7 +62,7 @@
         "price_eur": 1.99,
         "weight_g": 65,
         "protein_g": 8.0,
-        "channel": "vollsortiment, drogerie"
+        "channel": "full_range, drugstore"
       }
     ]
   },
@@ -165,7 +165,7 @@
     },
     {
       "agent_name": "Carolin Steiger",
-      "agent_type": "vollsortiment_buyer",
+      "agent_type": "full_range_buyer",
       "retailer": "a cooperative full-range grocer",
       "score": 9.3,
       "would_list": true,
@@ -181,7 +181,7 @@
     },
     {
       "agent_name": "Silke Bergmann",
-      "agent_type": "drogerie_buyer",
+      "agent_type": "drugstore_buyer",
       "retailer": "a health-focused drugstore chain",
       "score": 8.2,
       "would_list": true,
@@ -197,7 +197,7 @@
     },
     {
       "agent_name": "Henrik Albers",
-      "agent_type": "discounter_buyer",
+      "agent_type": "hard_discount_buyer",
       "retailer": "a leading German hard-discount chain",
       "score": 8.8,
       "would_list": true,
@@ -213,7 +213,7 @@
     },
     {
       "agent_name": "Tobias Schneider",
-      "agent_type": "discounter_buyer",
+      "agent_type": "intl_discount_buyer",
       "retailer": "an international hard-discount chain",
       "score": 7.5,
       "would_list": true,
@@ -229,7 +229,7 @@
     },
     {
       "agent_name": "Marcus Kern",
-      "agent_type": "vollsortiment_buyer",
+      "agent_type": "premium_full_range_buyer",
       "retailer": "a premium full-range grocer",
       "score": 6.2,
       "would_list": true,
@@ -245,7 +245,7 @@
     },
     {
       "agent_name": "Frank Richter",
-      "agent_type": "discounter_buyer",
+      "agent_type": "soft_discount_buyer",
       "retailer": "a regional discount chain in Northern Europe",
       "score": 4.2,
       "would_list": false,

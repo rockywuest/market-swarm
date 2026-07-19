@@ -31,9 +31,9 @@ product:
     Targets fitness enthusiasts and health-conscious snackers across all channels.
 
   target_channels:
-    - discounter
-    - vollsortiment
-    - drogerie
+    - discount
+    - full_range
+    - drugstore
 
   competitors:
     - name: "ProBar Elite"
@@ -41,28 +41,28 @@ product:
       price_eur: 2.59
       weight_g: 55
       protein_g: 20
-      channel: "vollsortiment, drogerie"
+      channel: "full_range, drugstore"
 
     - name: "FitSnack Classic"
       brand: "FitSnack"
       price_eur: 1.29
       weight_g: 45
       protein_g: 10
-      channel: "discounter, vollsortiment"
+      channel: "discount, full_range"
 
     - name: "PowerEdge Protein"
       brand: "PowerEdge"
       price_eur: 2.89
       weight_g: 60
       protein_g: 23
-      channel: "drogerie, online"
+      channel: "drugstore, online"
 
     - name: "Grain Craft Flapjack"
       brand: "Grain Craft"
       price_eur: 1.99
       weight_g: 65
       protein_g: 8
-      channel: "vollsortiment, drogerie"
+      channel: "full_range, drugstore"
 
 simulation:
   agents:
