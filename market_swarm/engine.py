@@ -362,13 +362,28 @@ def run_simulation(
     model: str = DEFAULT_MODEL,
     verbose: bool = True,
     pack_override: str | None = None,
+    extra_personas: list | None = None,
 ) -> SimulationResult:
-    """Run a full market simulation (synchronous — for CLI use)."""
+    """Run a full market simulation (synchronous — for CLI use).
+
+    Args:
+        product_path: Path to product YAML file.
+        model: LLM model to use.
+        verbose: Whether to print progress.
+        pack_override: Force a specific industry pack.
+        extra_personas: Additional personas to run (e.g., from population sources).
+            If provided, combined with pack's built-in personas.
+
+    Returns:
+        SimulationResult with all agent evaluations.
+    """
     product, config = load_product(product_path)
 
     product_type = pack_override or product.product_type
     pack = get_pack(product_type)
     personas_to_run = pack.personas
+    if extra_personas:
+        personas_to_run = personas_to_run + extra_personas
     total = len(personas_to_run)
 
     if verbose:
@@ -505,6 +520,7 @@ async def run_simulation_async(
     pack_override: str | None = None,
     max_concurrent: int = DEFAULT_MAX_CONCURRENT,
     on_progress: Optional[callable] = None,
+    extra_personas: list | None = None,
 ) -> SimulationResult:
     """Run a full market simulation with parallel LLM calls.
 
@@ -514,12 +530,16 @@ async def run_simulation_async(
         pack_override: Force a specific industry pack.
         max_concurrent: Max parallel LLM calls (default 5).
         on_progress: Optional callback(completed: int, total: int) for progress tracking.
+        extra_personas: Additional personas to run (e.g., from population sources).
+            If provided, combined with pack's built-in personas.
     """
     product, config = load_product(product_path)
 
     product_type = pack_override or product.product_type
     pack = get_pack(product_type)
     personas_to_run = pack.personas
+    if extra_personas:
+        personas_to_run = personas_to_run + extra_personas
     total = len(personas_to_run)
     semaphore = asyncio.Semaphore(max_concurrent)
 

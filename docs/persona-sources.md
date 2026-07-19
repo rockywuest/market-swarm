@@ -82,3 +82,83 @@ is *demonstrably* realistic — that calibration harness is part of the
 (interview-grounded agents reproducing individuals' survey answers with ~85%
 of test-retest accuracy) is the methodological north star: if you have real
 qualitative interviews, ground private personas in them.
+
+## Using population sources
+
+The `market-swarm[population]` extra includes the `datasets` library, enabling
+runtime loading of large persona datasets without redistributing them.
+
+### Installation
+
+```bash
+pip install "market-swarm[population]"
+```
+
+### CLI usage
+
+Add consumer personas from open datasets to any simulation:
+
+```bash
+# Sample 100 US Census–grounded personas from Nemotron-USA
+python -m market_swarm simulate --product examples/oat-bar-protein.yaml \
+  --population nemotron-usa:100
+
+# Sample 200 FinePersonas (Argilla)
+python -m market_swarm simulate --product examples/oat-bar-protein.yaml \
+  --population finepersonas:200
+
+# Generic HuggingFace dataset (any column with persona text)
+python -m market_swarm simulate --product examples/oat-bar-protein.yaml \
+  --population "hf:myorg/personas:persona_col:50"
+
+# Use ONLY population personas, skip pack's expert personas
+python -m market_swarm simulate --product examples/oat-bar-protein.yaml \
+  --population nemotron-usa:500 --population-only
+
+# Reproducible sampling with a custom seed
+python -m market_swarm simulate --product examples/oat-bar-protein.yaml \
+  --population nemotron-usa:100 --population-seed 12345
+```
+
+### Mock mode (offline demo)
+
+To run an offline demo without the `datasets` library or any network:
+
+```bash
+MARKET_SWARM_MOCK=1 python -m market_swarm simulate \
+  --product examples/oat-bar-protein.yaml \
+  --population nemotron-usa:25 --quiet
+```
+
+This generates 25 deterministic consumer personas (seeded) without hitting HuggingFace.
+Same seed always produces the same personas across runs, making tests repeatable.
+
+### Scaling and cost
+
+For consumer swarms of **500+ personas**, consider:
+
+1. **Cheaper model tier**: Use `claude-haiku-4-5` instead of `opus`:
+   ```bash
+   python -m market_swarm simulate --product examples/oat-bar.yaml \
+     --population nemotron-usa:500 --model claude-haiku-4-5
+   ```
+
+2. **Batches API** (50% discount): Contact Anthropic for access; batch 500 evaluations
+   overnight rather than in real-time. See
+   [Batches API docs](https://docs.anthropic.com/en/docs/build/batch-processing).
+
+3. **Trade off expert + consumer personas**: Keep the pack's 12–15 expert personas
+   (capture category-specific nuance) and add 100–200 consumers (statistical weight)
+   rather than 500 consumers alone.
+
+### Supported sources
+
+| Source | License | How to use |
+|---|---|---|
+| `nemotron-usa` | CC-BY-4.0 | `--population nemotron-usa:N` — NVIDIA 6M US personas, Census grounded |
+| `finepersonas` | Llama-3 | `--population finepersonas:N` — Argilla 21M personas from web text |
+| `hf:DATASET:COL` | (varies) | `--population "hf:owner/dataset:column:N"` — any HuggingFace dataset with persona column |
+
+To use a custom dataset, upload a dataset with a `persona` or custom column to
+[HuggingFace Hub](https://huggingface.co/datasets) and reference it via the
+`hf:owner/name:column` format.
