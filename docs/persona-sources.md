@@ -44,9 +44,11 @@ The German raw material for replicating this exists and is license-clean:
 | Eurostat [EU-SILC](https://ec.europa.eu/eurostat/web/microdata/european-union-statistics-on-income-and-living-conditions) + Household Budget Survey | Income & consumption, **harmonized across all EU states** | Microdata by application; aggregates open |
 | Academic synthetic populations (e.g. the [NRW 17.5M-person model](https://ieeexplore.ieee.org/document/9715369/), ~98% attribute accuracy) | Proof that census-grounded German populations are buildable | Published research |
 
-Building **census-grounded German consumer personas** from these sources is on
-this project's roadmap — as an open CC-BY dataset, because a market simulation
-is only as credible as its population.
+**Update: v0.1 is released.** [Personas-DE](https://huggingface.co/datasets/RockyRocket/personas-de)
+— 1,000 census-grounded German consumer personas (CC-BY-4.0), marginals within
+4.3% of official references, measured calibration score 79.8%. Methodology and
+limitations: [docs/personas-de.md](personas-de.md). Load it directly via
+`--population personas-de:N`.
 
 Note on German commercial segmentations (Sinus-Milieus, Limbic Types, GfK
 Roper): these are proprietary and trademarked — do not copy them into
