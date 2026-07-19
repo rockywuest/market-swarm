@@ -1,0 +1,5 @@
+name: b2b_saas
+display_name: "B2B SaaS"
+product_type: b2b_saas
+version: "1.0.0"
+description: "Personas and models for B2B SaaS products in professional services (audit, tax, compliance)."

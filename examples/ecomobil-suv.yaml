@@ -1,0 +1,75 @@
+product:
+  name: "EcoMobil eX5"
+  brand: "EcoMobil"
+  category: "SUV"
+  subcategory: "compact-SUV"
+  product_type: automotive
+
+  attributes:
+    antrieb: "BEV"
+    leistung_kw: 150
+    co2_wltp_g_km: 0
+    reichweite_wltp_km: 420
+    sitzplaetze: 5
+    kofferraum_liter: 520
+    laenge_mm: 4450
+    garantie_jahre: 5
+    sicherheit_euro_ncap: 5
+    assistenzsysteme:
+      - "Autonomous Emergency Braking"
+      - "Lane Keeping Assist"
+      - "Adaptive Cruise Control"
+      - "Blind Spot Warning"
+      - "Parking Assistance"
+      - "360-degree Camera"
+    infotainment: "12.3-inch touchscreen, Apple CarPlay, Android Auto, OTA software updates"
+
+  pricing:
+    listenpreis_eur: 42990
+    basispreis_eur: 38990
+    leasing_rate_eur: 389
+    bafa_foerderung_eur: 0
+    unterhaltskosten_monat_eur: 280
+    restwert_36m_pct: 52
+
+  claims:
+    - "420 km range (WLTP)"
+    - "5-star Euro NCAP safety"
+    - "5-year comprehensive warranty"
+    - "150 kW DC fast charging"
+    - "Sustainable vegan interior"
+  positioning: "The affordable electric SUV for families—sustainable, safe, practical for daily life."
+  target_channels:
+    - dealer_network
+    - online_direct_sales
+    - fleet_programs
+
+  competitors:
+    - name: "Competitor A (established German premium OEM)"
+      brand: null
+      listenpreis_eur: 44990
+      leistung_kw: 150
+      reichweite_wltp_km: 413
+      market_position: "High-volume mainstream segment"
+      key_differentiator: "Strong dealer network, proven platform architecture"
+    - name: "Competitor B (Nordic performance marque)"
+      brand: null
+      listenpreis_eur: 36590
+      leistung_kw: 200
+      reichweite_wltp_km: 344
+      market_position: "Premium market entry"
+      key_differentiator: "Minimalist design language, strong safety reputation"
+    - name: "Competitor C (volume European platform)"
+      brand: null
+      listenpreis_eur: 40900
+      leistung_kw: 132
+      reichweite_wltp_km: 390
+      market_position: "Value-for-money segment"
+      key_differentiator: "Larger cargo volume, practical feature set"
+
+simulation:
+  focus_areas:
+    - price_competition
+    - real_world_range
+    - family_suitability
+    - residual_value

@@ -1,0 +1,5 @@
+name: fmcg
+display_name: "FMCG / Food & Beverage"
+product_type: fmcg
+version: "1.0.0"
+description: "Personas and models for food & beverage retail simulation, with buyers and consumers across multiple channels."

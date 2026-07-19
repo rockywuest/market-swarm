@@ -1,0 +1,5 @@
+name: automotive
+display_name: "Automotive / Mobility"
+product_type: automotive
+version: "1.0.0"
+description: "Personas and models for vehicle launches in European markets (passenger cars, light commercial, electric)."

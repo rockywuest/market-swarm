@@ -1,0 +1,5 @@
+name: pharma
+display_name: "Pharma / Healthcare"
+product_type: pharma
+version: "1.0.0"
+description: "Personas and models for Rx/OTC product launches in the pharmaceutical market. Includes regulators (HTA, BfArM), healthcare providers (physicians, pharmacists, hospital buyers), payers, patients, and industry stakeholders. Evaluation criteria cover clinical efficacy, safety, price-effectiveness, and market positioning."

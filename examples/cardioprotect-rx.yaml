@@ -1,0 +1,69 @@
+product:
+  name: "CardioProtect 100mg"
+  brand: "Manufacturer"
+  category: "Pharma / Rx"
+  subcategory: "Cardiology"
+  product_type: pharma
+
+  attributes:
+    wirkstoff: "SGLT2 Inhibitor Class Agent"
+    darreichungsform: "Film-coated tablet"
+    zulassungsstatus: "Centralized EMA Approval"
+    indikation: "Heart failure with reduced ejection fraction (HFrEF), NYHA Class II-III"
+    vergleichstherapie: "SGLT2 inhibitors (Comparator A, Comparator B) / ARNI (Comparator C)"
+    evidenzlevel: "Phase III RCT, n=4,200, double-blind, multicenter"
+    nebenwirkungsprofil: "Common: urinary tract infections (5%), hypotension (3%). Uncommon: diabetic ketoacidosis (<0.1%)"
+    applikation: "Once daily oral, independent of meals"
+    besondere_patientengruppen:
+      - "Renal impairment (eGFR > 20 ml/min)"
+      - "Geriatric patients (no dose adjustment)"
+      - "Type 2 diabetes as comorbidity"
+
+  pricing:
+    apothekenverkaufspreis_eur: 89.50
+    herstellerabgabepreis_eur: 52.30
+    festbetrag_eur: null
+    ddd_preis_eur: 2.98
+    gkv_erstattung: true
+    rabattvertrag_moeglich: true
+
+  claims:
+    - "Significant reduction in cardiovascular mortality (HR 0.82, p<0.001)"
+    - "Superior safety profile vs. comparative therapies"
+    - "Once-daily dosing improves adherence"
+    - "Additional renoprotective effect"
+
+  positioning: >
+    Next-generation SGLT2 inhibitor for heart failure with reduced ejection fraction.
+    Superior efficacy with comparable safety profile to existing SGLT2 inhibitors.
+    Renoprotective benefit as key differentiator.
+
+  target_channels:
+    - "Outpatient cardiologists"
+    - "Hospital cardiology (formulary)"
+    - "Statutory health insurance rebate agreements"
+    - "General practitioners (primary care)"
+
+  competitors:
+    - name: "Comparator A"
+      brand: "SGLT2 inhibitor, market leader"
+      ddd_preis_eur: 3.15
+      market_position: "leader"
+      key_differentiator: "Broadest approved indications (HFrEF + HFpEF + CKD + T2DM)"
+    - name: "Comparator B"
+      brand: "SGLT2 inhibitor, alternate"
+      ddd_preis_eur: 3.45
+      market_position: "challenger"
+      key_differentiator: "Strong cardiovascular evidence from Phase III outcomes trial"
+    - name: "Comparator C"
+      brand: "ARNI, premium tier"
+      ddd_preis_eur: 4.82
+      market_position: "premium"
+      key_differentiator: "Guideline standard since 2019, angiotensin receptor-neprilysin inhibitor mechanism"
+
+simulation:
+  focus_areas:
+    - "added_benefit_vs_comparator"
+    - "pricing_vs_comparative_therapy"
+    - "guideline_alignment"
+    - "patient_adherence"

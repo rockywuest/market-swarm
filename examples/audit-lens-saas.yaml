@@ -1,0 +1,90 @@
+product:
+  name: "Audit Lens"
+  brand: "AuditLens"
+  category: "RegTech / AuditTech"
+  subcategory: "AI-Assisted Audit Report Review"
+  product_type: b2b_saas
+
+  attributes:
+    deployment: cloud
+    integration_effort: "Standard audit software export compatible, REST API for document management systems"
+    data_security: "GDPR-compliant, data residency in EU, ISO 27001 certification in progress"
+    ai_powered: true
+    languages:
+      - en
+      - de
+    certifications:
+      - "GDPR Article 28"
+      - "ISO 27001 (pending)"
+      - "SOC 2 Type II (pending)"
+
+  pricing:
+    monthly_per_user_eur: 89
+    annual_per_user_eur: 69
+    free_trial: true
+    free_tier: false
+    pricing_model: per_user
+    enterprise_custom: true
+
+  claims:
+    - "AI-assisted audit report review and compliance checking"
+    - "Automated flagging of audit standard (ISA 220) deviations"
+    - "Up to 80% reduction in manual report review time"
+    - "Complete audit trail and decision logging"
+    - "GDPR-compliant, EU data residency with encryption"
+
+  positioning: >
+    AuditLens is AI-assisted report review for professional audit firms of all sizes.
+    Automated analysis for report completeness, compliance with professional standards,
+    and consistency checking. Target audience: audit firms, tax practices with audit
+    functions, and professional associations seeking to modernize audit workflows.
+
+  target_channels:
+    - "Large and mid-market audit firms (50+ staff)"
+    - "Small practices with audit functions (10+ staff)"
+    - "Tax practices offering audit services"
+    - "Professional associations and training bodies"
+
+  competitors:
+    - name: "ReportCheck"
+      brand: "ReportCheck"
+      monthly_price_eur: 120
+      pricing_model: "per_user"
+      key_differentiator: "Established vendor with full audit suite integration"
+      market_position: "leader"
+
+    - name: "InternalAudit Pro"
+      brand: "Big-Four Platform"
+      monthly_price_eur: null
+      pricing_model: "internal_only"
+      key_differentiator: "Big-Four internal platform, not available to external firms"
+      market_position: "leader"
+
+    - name: "PracticePro"
+      brand: "PracticePro Solutions"
+      monthly_price_eur: 79
+      pricing_model: "per_user"
+      key_differentiator: "Focus on small-practice audits, low-cost entry point"
+      market_position: "challenger"
+
+    - name: "DataVault Analytics"
+      brand: "DataVault"
+      monthly_price_eur: 150
+      pricing_model: "enterprise"
+      key_differentiator: "Advanced anomaly detection in financial data, international deployment"
+      market_position: "niche"
+
+simulation:
+  agents:
+    decision_makers: 3
+    end_users: 3
+    gatekeepers: 2
+    procurement: 1
+    competitor_analyst: 1
+  rounds: 1
+  focus_areas:
+    - regulatory_compliance
+    - pricing_acceptance
+    - integration_complexity
+    - trust_and_data_security
+    - competitive_differentiation

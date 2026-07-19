@@ -1,0 +1,77 @@
+product:
+  name: "NordOat Protein Bar"
+  brand: "NordOat Foods"
+  category: "Cereal Bar"
+  subcategory: "Protein"
+
+  attributes:
+    weight_g: 45
+    protein_g: 12
+    sugar_g: 4.5
+    fiber_g: 6
+    organic: false
+    vegan: true
+    gluten_free: false
+
+  pricing:
+    rrp_eur: 1.49
+    trade_price_eur: 0.85
+    margin_retail_pct: 43
+
+  claims:
+    - "High Protein (12g)"
+    - "Low Sugar"
+    - "Vegan"
+    - "Nordic Oat Blend"
+
+  positioning: >
+    Premium protein snack for active lifestyles.
+    Competing with established premium brands at a value price point.
+    Clean label, minimal ingredient list, oat-based formula (core competency).
+    Targets fitness enthusiasts and health-conscious snackers across all channels.
+
+  target_channels:
+    - discounter
+    - vollsortiment
+    - drogerie
+
+  competitors:
+    - name: "ProBar Elite"
+      brand: "ProBar Elite"
+      price_eur: 2.59
+      weight_g: 55
+      protein_g: 20
+      channel: "vollsortiment, drogerie"
+
+    - name: "FitSnack Classic"
+      brand: "FitSnack"
+      price_eur: 1.29
+      weight_g: 45
+      protein_g: 10
+      channel: "discounter, vollsortiment"
+
+    - name: "PowerEdge Protein"
+      brand: "PowerEdge"
+      price_eur: 2.89
+      weight_g: 60
+      protein_g: 23
+      channel: "drogerie, online"
+
+    - name: "Grain Craft Flapjack"
+      brand: "Grain Craft"
+      price_eur: 1.99
+      weight_g: 65
+      protein_g: 8
+      channel: "vollsortiment, drogerie"
+
+simulation:
+  agents:
+    buyers: 12
+    category_managers: 8
+    consumers: 30
+  rounds: 3
+  focus_areas:
+    - pricing_acceptance
+    - shelf_placement
+    - cannibalization_risk
+    - consumer_appeal
