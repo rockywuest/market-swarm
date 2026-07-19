@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Swarm — AI Product Launch Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700;900&family=Georgia&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --accent: #2563eb;
+            --accent-dark: #1e3a5f;
+            --accent-light: #3b82f6;
+            --accent-muted: #60a5fa;
+            --warm: #f59e0b;
+            --warm-light: #fbbf24;
+            --success: #10b981;
+            --danger: #ef4444;
+            --slate-900: #0f172a;
+            --slate-700: #334155;
+            --slate-500: #64748b;
+            --slate-300: #cbd5e1;
+            --slate-100: #f1f5f9;
+            --bg-white: #f8fafc;
+            --text-dark: #0f172a;
+            --card-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 4px 14px rgba(15, 23, 42, 0.04);
+            --card-shadow-hover: 0 4px 20px rgba(15, 23, 42, 0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', 'Franklin Gothic Medium', sans-serif;
+            background: var(--bg-white);
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* ── Header ── */
+        header {
+            background: linear-gradient(135deg, var(--slate-900) 0%, var(--accent-dark) 100%);
+            color: white;
+            padding: 2rem 2rem 1.5rem;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .brand {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.7;
+        }
+
+        .tagline {
+            font-size: 0.75rem;
+            background: rgba(255,255,255,0.12);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 0.25rem;
+        }
+
+        h1 .accent {
+            color: var(--accent-muted);
+        }
+
+        .subtitle {
+            font-weight: 300;
+            font-size: 1rem;
+            opacity: 0.85;
+        }
+
+        /* ── Status Bar ── */
+        .status-bar {
+            background: white;
+            border-bottom: 3px solid var(--accent);
+            padding: 0.75rem 2rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            font-size: 0.85rem;
+            box-shadow: var(--card-shadow);
+            flex-wrap: wrap;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--slate-300);
+        }
+
+        .status-dot.active { background: var(--success); }
+        .status-dot.pending { background: var(--warm); }
+
+        /* ── File Picker ── */
+        .file-picker {
+            background: white;
+            border: 2px dashed var(--slate-300);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: border-color 0.2s, background 0.2s;
+            flex-wrap: wrap;
+        }
+
+        .file-picker.drag-over {
+            border-color: var(--accent);
+            background: rgba(37, 99, 235, 0.04);
+        }
+
+        .file-picker-label {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--slate-700);
+            white-space: nowrap;
+        }
+
+        .file-picker-hint {
+            font-size: 0.8rem;
+            color: var(--slate-500);
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .file-picker input[type="file"] {
+            display: none;
+        }
+
+        .file-picker-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .file-picker-btn:hover {
+            background: var(--accent-dark);
+        }
+
+        .file-name-display {
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* ── Main Layout ── */
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ── Cards ── */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(203, 213, 225, 0.4);
+            transition: box-shadow 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--accent-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-badge {
+            font-size: 0.7rem;
+            background: var(--accent-dark);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        /* ── Product Card ── */
+        .product-hero {
+            background: linear-gradient(135deg, var(--slate-900) 0%, var(--accent-dark) 60%, var(--accent) 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-hero::after {
+            content: attr(data-emoji);
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 4rem;
+            opacity: 0.12;
+        }
+
+        .product-name {
+            font-size: 1.75rem;
+            font-weight: 900;
+            margin-bottom: 0.25rem;
+        }
+
+        .product-brand {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .product-stats {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
+
+        /* ── Score Ring ── */
+        .score-ring {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1rem;
+            position: relative;
+        }
+
+        .score-ring canvas {
+            width: 120px;
+            height: 120px;
+        }
+
+        .score-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .score-number {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--accent-dark);
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 0.65rem;
+            color: var(--slate-500);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ── Agent Rows ── */
+        .agent-row {
+            display: flex;
+            align-items: center;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(203, 213, 225, 0.3);
+            gap: 0.75rem;
+        }
+
+        .agent-row:last-child { border-bottom: none; }
+
+        .agent-emoji { font-size: 1.2rem; flex-shrink: 0; }
+
+        .agent-info { flex: 1; min-width: 0; }
+
+        .agent-name {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+        }
+
+        .agent-retailer {
+            font-size: 0.7rem;
+            color: var(--slate-500);
+        }
+
+        .agent-score {
+            font-weight: 900;
+            font-size: 1.1rem;
+            min-width: 45px;
+            text-align: right;
+        }
+
+        .agent-score.high { color: var(--success); }
+        .agent-score.mid { color: var(--warm); }
+        .agent-score.low { color: var(--danger); }
+
+        .agent-verdict {
+            font-size: 0.75rem;
+            color: var(--slate-500);
+            flex: 2;
+            text-align: right;
+        }
+
+        /* ── Objections / Suggestions ── */
+        .feedback-item {
+            padding: 0.5rem 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+
+        .feedback-item.objection {
+            background: rgba(239, 68, 68, 0.05);
+            border-left: 3px solid var(--danger);
+        }
+
+        .feedback-item.suggestion {
+            background: rgba(245, 158, 11, 0.06);
+            border-left: 3px solid var(--warm);
+        }
+
+        /* ── Chart Container ── */
+        .chart-container {
+            position: relative;
+            height: 280px;
+        }
+
+        /* ── Disclaimer ── */
+        .disclaimer {
+            background: var(--slate-100);
+            border: 1px solid var(--slate-300);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: var(--slate-700);
+            line-height: 1.6;
+        }
+
+        .disclaimer-label {
+            font-weight: 700;
+            color: var(--slate-900);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.7rem;
+            display: block;
+            margin-bottom: 0.35rem;
+        }
+
+        /* ── Footer ── */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.75rem;
+            color: var(--slate-500);
+            border-top: 1px solid rgba(203, 213, 225, 0.3);
+            margin-top: 2rem;
+        }
+
+        footer .accent { color: var(--accent); font-weight: 700; }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .product-stats { flex-direction: column; gap: 0.75rem; }
+            h1 { font-size: 1.5rem; }
+            .file-picker { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-top">
+        <span class="brand" id="header-brand">Market Swarm</span>
+        <span class="tagline">AI Agent Simulation</span>
+    </div>
+    <h1><span class="accent" id="header-product-name">Market</span> Swarm</h1>
+    <p class="subtitle">AI-powered market simulation for product launches</p>
+</header>
+
+<div class="status-bar">
+    <div class="status-item">
+        <span class="status-dot active"></span>
+        <span>Engine ready</span>
+    </div>
+    <div class="status-item">
+        <span class="status-dot" id="status-agents-dot"></span>
+        <span id="status-agents-text">No data loaded</span>
+    </div>
+    <div class="status-item">
+        <span class="status-dot" id="status-sim-dot"></span>
+        <span id="status-sim-text">Run a simulation or load results</span>
+    </div>
+</div>
+
+<main>
+
+    <!-- Simulation Control -->
+    <div class="file-picker" id="control-panel">
+        <span class="file-picker-label">Run Simulation</span>
+        <select id="pack-dropdown" style="flex:1;min-width:200px;padding:0.5rem 1rem;border:1px solid var(--slate-300);border-radius:8px;font-size:0.85rem;font-weight:500;font-family:inherit;background:white;">
+            <option value="">Loading industry packs...</option>
+        </select>
+        <button class="file-picker-btn" id="run-simulation-btn" style="cursor:not-allowed;opacity:0.5;">Start Simulation</button>
+        <span id="sim-status" style="font-size:0.8rem;color:var(--slate-500);flex:1;"></span>
+    </div>
+
+    <!-- Product Hero -->
+    <div class="product-hero" id="product-hero" data-emoji="">
+        <div class="product-name" id="product-name">No product loaded</div>
+        <div class="product-brand" id="product-brand">Load a result file to view simulation data</div>
+        <div class="product-stats" id="product-stats"></div>
+    </div>
+
+    <!-- Score Overview -->
+    <div class="grid-3">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Overall Score</span>
+                <span class="card-badge">Average across all agents</span>
+            </div>
+            <div class="score-ring">
+                <canvas id="scoreRing"></canvas>
+                <div class="score-center">
+                    <div class="score-number" id="avg-score">&mdash;</div>
+                    <div class="score-label">of 10</div>
+                </div>
+            </div>
+            <p style="text-align:center; font-size:0.85rem; color:var(--slate-500);" id="listing-rate">Listing rate: &mdash;</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Channel Scores</span>
+                <span class="card-badge">By channel</span>
+            </div>
+            <div class="chart-container">
+                <canvas id="channelChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Price Benchmark</span>
+                <span class="card-badge">vs competition</span>
+            </div>
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agent Results + Feedback -->
+    <div class="grid-2">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Agent Ratings</span>
+                <span class="card-badge" id="agent-count">0 agents</span>
+            </div>
+            <div id="agent-list">
+                <p style="color:var(--slate-500); font-size:0.85rem; text-align:center; padding:2rem 0;">
+                    Run a simulation to see agent ratings
+                </p>
+            </div>
+        </div>
+
+        <div>
+            <div class="card" style="margin-bottom:1.5rem;">
+                <div class="card-header">
+                    <span class="card-title">Top Objections</span>
+                    <span class="card-badge" style="background:var(--danger);">Risks</span>
+                </div>
+                <div id="objections-list">
+                    <p style="color:var(--slate-500); font-size:0.85rem; text-align:center; padding:1rem 0;">&mdash;</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Top Recommendations</span>
+                    <span class="card-badge" style="background:var(--warm); color:var(--text-dark);">Opportunities</span>
+                </div>
+                <div id="suggestions-list">
+                    <p style="color:var(--slate-500); font-size:0.85rem; text-align:center; padding:1rem 0;">&mdash;</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disclaimer (hidden until data loads) -->
+    <div class="disclaimer" id="disclaimer" style="display:none;">
+        <span class="disclaimer-label">EU AI Act Compliance — Important Notice</span>
+        <span id="disclaimer-text"></span>
+    </div>
+
+</main>
+
+<footer>
+    <span class="accent">Market</span> Swarm — Open Source AI Product Launch Simulator<br>
+    <span style="opacity:0.6; font-size:0.65rem;">Results are AI-generated simulations, not empirical market research. All agent reactions are fictional.</span>
+</footer>
+
+<script>
+// ── Demo Data (fallback when no results.json is found) ──
+const demoData = null;  // Load from sample-result.json instead
+
+// ── State ──
+let channelChartInstance = null;
+let priceChartInstance = null;
+
+// ── Emoji mapping for agent types ──
+function agentEmoji(type) {
+    const map = {
+        'discounter_buyer': String.fromCodePoint(0x1F3EA),
+        'vollsortiment_buyer': String.fromCodePoint(0x1F6D2),
+        'drogerie_buyer': String.fromCodePoint(0x1F48A),
+        'consumer_price_sensitive': String.fromCodePoint(0x1F468, 0x200D, 0x1F469, 0x200D, 0x1F467, 0x200D, 0x1F466),
+        'consumer_health': String.fromCodePoint(0x1F4AA),
+        'consumer_organic': String.fromCodePoint(0x1F33F),
+        'consumer_trend': String.fromCodePoint(0x1F4F1),
+        'category_manager_internal': String.fromCodePoint(0x1F3ED),
+        'category_manager_retail': String.fromCodePoint(0x1F4CA),
+        'enterprise_buyer': String.fromCodePoint(0x1F3E2),
+        'mid_market_buyer': String.fromCodePoint(0x1F3EC),
+        'startup_buyer': String.fromCodePoint(0x1F680),
+        'it_decision_maker': String.fromCodePoint(0x1F4BB),
+        'cfo': String.fromCodePoint(0x1F4B0),
+        'end_user': String.fromCodePoint(0x1F464),
+        'consultant': String.fromCodePoint(0x1F4CB),
+        'partner': String.fromCodePoint(0x1F91D),
+    };
+    return map[type] || String.fromCodePoint(0x1F916);
+}
+
+// ── Escape HTML to prevent XSS ──
+function esc(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+// ── Transform real simulation JSON to dashboard format ──
+function transformSimulationData(raw) {
+    const product = raw.product || {};
+    const pricing = product.pricing || {};
+
+    // Determine the display price -- handle both FMCG and SaaS
+    const isSaaS = product.product_type === 'b2b_saas';
+    let displayPrice, priceLabel;
+    if (isSaaS) {
+        if (pricing.monthly_per_user_eur) {
+            displayPrice = pricing.monthly_per_user_eur;
+            priceLabel = '/user/mo';
+        } else if (pricing.flat_monthly_eur) {
+            displayPrice = pricing.flat_monthly_eur;
+            priceLabel = '/mo';
+        } else if (pricing.annual_per_user_eur) {
+            displayPrice = pricing.annual_per_user_eur;
+            priceLabel = '/user/yr';
+        } else {
+            displayPrice = null;
+            priceLabel = '';
+        }
+    } else {
+        displayPrice = pricing.rrp_eur || null;
+        priceLabel = 'RRP';
+    }
+
+    // Build competitor list (normalize price field)
+    const competitors = (product.competitors || []).map(function(c) {
+        return {
+            name: c.name,
+            price_eur: c.price_eur || c.monthly_price_eur || 0,
+            brand: c.brand || ''
+        };
+    });
+
+    // Build agents list from responses
+    const agents = (raw.responses || []).map(function(r) {
+        return {
+            name: r.agent_name,
+            type: r.agent_type,
+            retailer: r.retailer || r.agent_type.replace(/_/g, ' '),
+            score: r.score,
+            listed: r.would_list,
+            feedback: r.key_feedback || '',
+            emoji: agentEmoji(r.agent_type)
+        };
+    });
+
+    // Use pre-computed scores if available, otherwise compute from agents
+    var avgScore = raw.avg_score != null
+        ? raw.avg_score
+        : (agents.length ? agents.reduce(function(s, a) { return s + a.score; }, 0) / agents.length : 0);
+
+    var listingRate = raw.listing_rate != null
+        ? raw.listing_rate
+        : (agents.length ? agents.filter(function(a) { return a.listed; }).length / agents.length : 0);
+
+    // Channel scores: prefer pre-computed, else derive from agents
+    var channelScores = raw.channel_scores || null;
+    if (!channelScores && agents.length) {
+        channelScores = {};
+        agents.forEach(function(a) {
+            if (!channelScores[a.retailer]) channelScores[a.retailer] = [];
+            channelScores[a.retailer].push(a.score);
+        });
+        Object.keys(channelScores).forEach(function(k) {
+            var arr = channelScores[k];
+            channelScores[k] = arr.reduce(function(a, b) { return a + b; }, 0) / arr.length;
+        });
+    }
+
+    return {
+        product: Object.assign({}, product, {
+            pricing: pricing,
+            competitors: competitors,
+            displayPrice: displayPrice,
+            priceLabel: priceLabel,
+            isSaaS: isSaaS
+        }),
+        agents: agents,
+        objections: raw.top_objections || [],
+        suggestions: raw.top_suggestions || [],
+        avgScore: avgScore,
+        listingRate: listingRate,
+        channelScores: channelScores || {},
+        disclaimer: raw.disclaimer || null
+    };
+}
+
+// ── API Helpers ──
+var productYaml = null;  // Loaded from examples/oat-bar-protein.yaml or selected pack
+
+async function loadPackDropdown() {
+    try {
+        var res = await fetch('/api/packs');
+        if (!res.ok) return;
+        var packs = await res.json();
+
+        var dropdown = document.getElementById('pack-dropdown');
+        dropdown.innerHTML = '<option value="">Select an industry pack...</option>';
+        packs.forEach(function(p) {
+            var opt = document.createElement('option');
+            opt.value = p.product_type;
+            opt.textContent = p.display_name + ' (v' + p.version + ', ' + p.persona_count + ' agents)';
+            dropdown.appendChild(opt);
+        });
+
+        // Enable run button
+        document.getElementById('run-simulation-btn').style.cursor = 'pointer';
+        document.getElementById('run-simulation-btn').style.opacity = '1';
+    } catch (e) {
+        console.warn('Could not load packs:', e);
+        document.getElementById('sim-status').textContent = 'API unreachable. Load results manually.';
+    }
+}
+
+async function runSimulation() {
+    var btn = document.getElementById('run-simulation-btn');
+    if (!productYaml) {
+        alert('Product YAML not loaded. Using bundled example.');
+        // Load the bundled example product YAML from server
+        try {
+            var res = await fetch('./oat-bar-protein.yaml');
+            productYaml = await res.text();
+        } catch (e) {
+            document.getElementById('sim-status').textContent = 'Error: Could not load example product';
+            return;
+        }
+    }
+
+    btn.disabled = true;
+    var status = document.getElementById('sim-status');
+    status.textContent = 'Starting simulation...';
+
+    try {
+        var res = await fetch('/api/simulations', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ product_yaml: productYaml })
+        });
+
+        if (!res.ok) {
+            var err = await res.json();
+            throw new Error(err.detail || res.statusText);
+        }
+
+        var job = await res.json();
+        status.textContent = 'Job ' + job.job_id.substring(0, 8) + '... running...';
+        pollSimulation(job.job_id);
+    } catch (e) {
+        status.textContent = 'Error: ' + e.message;
+        btn.disabled = false;
+    }
+}
+
+function pollSimulation(jobId) {
+    var status = document.getElementById('sim-status');
+    var btn = document.getElementById('run-simulation-btn');
+
+    function poll() {
+        fetch('/api/simulations/' + jobId)
+            .then(function(res) { return res.json(); })
+            .then(function(job) {
+                if (job.status === 'running') {
+                    var p = job.progress || {};
+                    status.textContent = 'Running: ' + (p.completed || 0) + '/' + (p.total || '?') + ' agents...';
+                    setTimeout(poll, 1500);
+                } else if (job.status === 'completed') {
+                    status.textContent = 'Loading results...';
+                    loadAndRenderResult(jobId);
+                } else if (job.status === 'failed') {
+                    status.textContent = 'Failed: ' + (job.error || 'unknown error');
+                    btn.disabled = false;
+                } else {
+                    setTimeout(poll, 1000);
+                }
+            })
+            .catch(function(e) {
+                status.textContent = 'Poll error: ' + e.message;
+                btn.disabled = false;
+            });
+    }
+    setTimeout(poll, 1000);
+}
+
+async function loadAndRenderResult(jobId) {
+    try {
+        var res = await fetch('/api/results/' + jobId);
+        if (!res.ok) throw new Error(res.statusText);
+        var raw = await res.json();
+        var data = transformSimulationData(raw);
+        renderDashboard(data);
+
+        document.getElementById('sim-status').textContent = 'Simulation complete!';
+        document.getElementById('run-simulation-btn').disabled = false;
+    } catch (e) {
+        document.getElementById('sim-status').textContent = 'Error loading results: ' + e.message;
+        document.getElementById('run-simulation-btn').disabled = false;
+    }
+}
+
+// ── Render Functions ──
+
+function renderHeader(data) {
+    var product = data.product;
+    document.getElementById('header-brand').textContent = product.brand || 'Market Swarm';
+    document.getElementById('header-product-name').textContent = product.name || 'Market';
+}
+
+function renderProductHero(data) {
+    var product = data.product;
+    var hero = document.getElementById('product-hero');
+    var isSaaS = product.isSaaS;
+
+    // Pick an emoji for the product type
+    var emoji = '';
+    var cat = (product.category || '').toLowerCase();
+    if (isSaaS) emoji = String.fromCodePoint(0x1F4BB);
+    else if (cat.includes('riegel') || cat.includes('bar')) emoji = String.fromCodePoint(0x1F36B);
+    else if (cat.includes('cereal') || cat.includes('muesli') || cat.includes('m\u00FCsli')) emoji = String.fromCodePoint(0x1F963);
+    else if (cat.includes('drink') || cat.includes('getr\u00E4nk')) emoji = String.fromCodePoint(0x1F964);
+    else emoji = String.fromCodePoint(0x1F4E6);
+    hero.setAttribute('data-emoji', emoji);
+
+    document.getElementById('product-name').textContent = product.name || 'Unknown Product';
+
+    var parts = [product.brand, product.category, product.subcategory].filter(Boolean);
+    document.getElementById('product-brand').textContent = parts.join(' \u00B7 ');
+
+    var statsEl = document.getElementById('product-stats');
+    var statsHTML = [];
+    var attrs = product.attributes || {};
+
+    if (product.displayPrice != null) {
+        var priceStr = isSaaS
+            ? product.displayPrice.toFixed(0) + '\u20AC'
+            : product.displayPrice.toFixed(2).replace('.', ',') + '\u20AC';
+        statsHTML.push('<div class="stat"><div class="stat-value">' + esc(priceStr) + '</div><div class="stat-label">' + esc(product.priceLabel || 'Price') + '</div></div>');
+    }
+
+    if (attrs.protein_g) statsHTML.push('<div class="stat"><div class="stat-value">' + esc(attrs.protein_g + 'g') + '</div><div class="stat-label">Protein</div></div>');
+    if (attrs.sugar_g != null) statsHTML.push('<div class="stat"><div class="stat-value">' + esc(attrs.sugar_g + 'g') + '</div><div class="stat-label">Sugar</div></div>');
+    if (product.pricing && product.pricing.margin_retail_pct) {
+        statsHTML.push('<div class="stat"><div class="stat-value">' + esc(product.pricing.margin_retail_pct + '%') + '</div><div class="stat-label">Retail Margin</div></div>');
+    }
+    if (attrs.vegan) statsHTML.push('<div class="stat"><div class="stat-value">' + String.fromCodePoint(0x1F331) + '</div><div class="stat-label">Vegan</div></div>');
+    if (attrs.deployment) statsHTML.push('<div class="stat"><div class="stat-value">' + esc(attrs.deployment) + '</div><div class="stat-label">Deployment</div></div>');
+    if (attrs.data_security) statsHTML.push('<div class="stat"><div class="stat-value">' + String.fromCodePoint(0x1F512) + '</div><div class="stat-label">GDPR</div></div>');
+
+    statsEl.innerHTML = statsHTML.join('');
+}
+
+function renderAgents(agents) {
+    var list = document.getElementById('agent-list');
+    if (!agents.length) {
+        list.textContent = '';
+        var p = document.createElement('p');
+        p.style.cssText = 'color:var(--slate-500); font-size:0.85rem; text-align:center; padding:2rem 0;';
+        p.textContent = 'No agent data available';
+        list.appendChild(p);
+        document.getElementById('agent-count').textContent = '0 AGENTS';
+        return;
+    }
+
+    var html = agents.map(function(a) {
+        var scoreClass = a.score >= 7.5 ? 'high' : a.score >= 5.0 ? 'mid' : 'low';
+        var icon = a.listed ? String.fromCodePoint(0x2705) : String.fromCodePoint(0x274C);
+        var shortFeedback = a.feedback.length > 80 ? a.feedback.substring(0, 77) + '...' : a.feedback;
+        return '<div class="agent-row">' +
+            '<span class="agent-emoji">' + a.emoji + '</span>' +
+            '<div class="agent-info">' +
+                '<div class="agent-name">' + icon + ' ' + esc(a.name) + '</div>' +
+                '<div class="agent-retailer">' + esc(a.retailer) + '</div>' +
+            '</div>' +
+            '<div class="agent-score ' + scoreClass + '">' + a.score.toFixed(1) + '</div>' +
+            '<div class="agent-verdict">' + esc(shortFeedback) + '</div>' +
+        '</div>';
+    }).join('');
+    list.innerHTML = html;
+    document.getElementById('agent-count').textContent = agents.length + ' agents';
+}
+
+function renderFeedback(objections, suggestions) {
+    var maxItems = 8;
+    var objEl = document.getElementById('objections-list');
+    var sugEl = document.getElementById('suggestions-list');
+
+    if (objections.length) {
+        objEl.innerHTML = objections.slice(0, maxItems).map(function(o) {
+            return '<div class="feedback-item objection">' + esc(o) + '</div>';
+        }).join('');
+    } else {
+        objEl.innerHTML = '<p style="color:var(--slate-500); font-size:0.85rem; text-align:center; padding:1rem 0;">&mdash;</p>';
+    }
+
+    if (suggestions.length) {
+        sugEl.innerHTML = suggestions.slice(0, maxItems).map(function(s) {
+            return '<div class="feedback-item suggestion">' + esc(s) + '</div>';
+        }).join('');
+    } else {
+        sugEl.innerHTML = '<p style="color:var(--slate-500); font-size:0.85rem; text-align:center; padding:1rem 0;">&mdash;</p>';
+    }
+}
+
+function renderScoreRing(score) {
+    document.getElementById('avg-score').textContent = score.toFixed(1);
+    var canvas = document.getElementById('scoreRing');
+    var ctx = canvas.getContext('2d');
+    canvas.width = 240;
+    canvas.height = 240;
+
+    var centerX = 120, centerY = 120, radius = 100, lineWidth = 14;
+    var pct = score / 10;
+
+    // Background ring
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = '#e2e8f0';
+    ctx.lineWidth = lineWidth;
+    ctx.stroke();
+
+    // Score arc -- color based on score
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct);
+    var gradient = ctx.createLinearGradient(0, 0, 240, 240);
+    if (score >= 7) {
+        gradient.addColorStop(0, '#10b981');
+        gradient.addColorStop(1, '#059669');
+    } else if (score >= 5) {
+        gradient.addColorStop(0, '#f59e0b');
+        gradient.addColorStop(1, '#d97706');
+    } else {
+        gradient.addColorStop(0, '#ef4444');
+        gradient.addColorStop(1, '#dc2626');
+    }
+    ctx.strokeStyle = gradient;
+    ctx.lineWidth = lineWidth;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+}
+
+function renderChannelChart(channelScores) {
+    if (channelChartInstance) {
+        channelChartInstance.destroy();
+        channelChartInstance = null;
+    }
+
+    var labels = Object.keys(channelScores);
+    var data = labels.map(function(l) {
+        var val = channelScores[l];
+        return typeof val === 'number' ? val : (Array.isArray(val) ? val.reduce(function(a, b) { return a + b; }, 0) / val.length : 0);
+    });
+
+    if (!labels.length) return;
+
+    var bgColors = data.map(function(v) {
+        if (v >= 7.5) return '#10b981';
+        if (v >= 5.0) return '#f59e0b';
+        return '#ef4444';
+    });
+
+    channelChartInstance = new Chart(document.getElementById('channelChart'), {
+        type: 'bar',
+        data: {
+            labels: labels.map(function(l) { return l.length > 18 ? l.substring(0, 16) + '...' : l; }),
+            datasets: [{
+                data: data,
+                backgroundColor: bgColors,
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, max: 10, grid: { color: 'rgba(148,163,184,0.12)' } },
+                x: { ticks: { font: { size: 9 }, maxRotation: 45 } }
+            }
+        }
+    });
+}
+
+function renderPriceChart(product) {
+    if (priceChartInstance) {
+        priceChartInstance.destroy();
+        priceChartInstance = null;
+    }
+
+    var competitors = product.competitors || [];
+    if (!competitors.length && !product.displayPrice) return;
+
+    var isSaaS = product.isSaaS;
+    var ownPrice = product.displayPrice || 0;
+    var ownName = product.name || 'This Product';
+
+    var items = [{ name: ownName, price: ownPrice, own: true }];
+    competitors.forEach(function(c) {
+        if (c.price_eur > 0) {
+            items.push({ name: c.name, price: c.price_eur, own: false });
+        }
+    });
+    items.sort(function(a, b) { return a.price - b.price; });
+
+    if (items.length < 2) return;
+
+    var suffix = isSaaS ? '\u20AC/mo' : '\u20AC';
+
+    priceChartInstance = new Chart(document.getElementById('priceChart'), {
+        type: 'bar',
+        data: {
+            labels: items.map(function(i) { return i.name.length > 22 ? i.name.substring(0, 20) + '...' : i.name; }),
+            datasets: [{
+                data: items.map(function(i) { return i.price; }),
+                backgroundColor: items.map(function(i) { return i.own ? '#2563eb' : '#94a3b8'; }),
+                borderRadius: 6
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { beginAtZero: true, ticks: { callback: function(v) { return v.toFixed(isSaaS ? 0 : 2) + suffix; } } },
+                y: { ticks: { font: { size: 11 } } }
+            }
+        }
+    });
+}
+
+function renderDisclaimer(disclaimer) {
+    var el = document.getElementById('disclaimer');
+    var textEl = document.getElementById('disclaimer-text');
+    if (disclaimer) {
+        textEl.textContent = disclaimer;
+        el.style.display = 'block';
+    } else {
+        el.style.display = 'none';
+    }
+}
+
+function updateStatusBar(data) {
+    var agentsDot = document.getElementById('status-agents-dot');
+    var agentsText = document.getElementById('status-agents-text');
+    var simDot = document.getElementById('status-sim-dot');
+    var simText = document.getElementById('status-sim-text');
+
+    agentsDot.className = 'status-dot active';
+    agentsText.textContent = data.agents.length + ' agents configured';
+
+    simDot.className = 'status-dot active';
+    var now = new Date();
+    simText.textContent = 'Data loaded: ' + now.toLocaleString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+// ── Master render function ──
+function renderDashboard(data) {
+    renderHeader(data);
+    renderProductHero(data);
+    renderScoreRing(data.avgScore);
+    document.getElementById('listing-rate').textContent = 'Listing rate: ' + (data.listingRate * 100).toFixed(0) + '%';
+    renderAgents(data.agents);
+    renderFeedback(data.objections, data.suggestions);
+    renderChannelChart(data.channelScores);
+    renderPriceChart(data.product);
+    renderDisclaimer(data.disclaimer);
+    updateStatusBar(data);
+}
+
+// ── Event Handlers ──
+document.getElementById('run-simulation-btn').addEventListener('click', runSimulation);
+
+// ── Initialize on Load ──
+async function init() {
+    // Try to load packs from API
+    loadPackDropdown();
+
+    // Try to load sample results as default display
+    try {
+        var res = await fetch('./sample-result.json');
+        if (res.ok) {
+            var raw = await res.json();
+            var data = transformSimulationData(raw);
+            renderDashboard(data);
+            document.getElementById('sim-status').textContent = 'Showing example results. Click "Start Simulation" to run.';
+            return;
+        }
+    } catch (e) { /* No sample-result.json */ }
+
+    // No sample results available
+    document.getElementById('sim-status').textContent = 'Ready. Select a pack and click to simulate.';
+
+    // Render empty state
+    document.getElementById('product-name').textContent = 'No simulation loaded';
+    document.getElementById('product-brand').textContent = 'Run a simulation to view results';
+}
+
+init();
+</script>
+
+</body>
+</html>
