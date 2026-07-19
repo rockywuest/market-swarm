@@ -1,0 +1,147 @@
+# Market Swarm Calibration Question Set
+# Consumer Basics (EU Baseline)
+#
+# Reference values are approximate public aggregates for methodology demonstration.
+# Sourced from Eurostat, EU-SILC, Eurobarometer, and official statistical offices.
+# Contribute better-sourced question sets via PR — calibration improves with real data.
+
+version: "1.0"
+region: "EU"
+description: "Baseline calibration questions for European consumer personas"
+
+questions:
+  - id: "grocery_channel_preference"
+    question: "When you buy groceries for your household, which type of store do you shop at most frequently?"
+    options:
+      - "Hard discounter"
+      - "Full-range supermarket (Carrefour, Tesco, similar)"
+      - "Specialty / local shops"
+      - "Online grocery delivery"
+    reference:
+      "Hard discounter": 0.35
+      "Full-range supermarket (Carrefour, Tesco, similar)": 0.50
+      "Specialty / local shops": 0.10
+      "Online grocery delivery": 0.05
+    source:
+      name: "Eurostat Household Consumption Survey"
+      url: "https://ec.europa.eu/eurostat/web/microdata/household-budget-survey"
+    note: "Approximate distribution based on EU-wide HBS (2023). Hard discounters dominate in CEE/Germany, full-range in Western EU."
+
+  - id: "organic_purchase_frequency"
+    question: "How often do you buy organic food products?"
+    options:
+      - "Regularly (weekly or more often)"
+      - "Sometimes (few times per month)"
+      - "Rarely (a few times per year)"
+      - "Never"
+    reference:
+      "Regularly (weekly or more often)": 0.15
+      "Sometimes (few times per month)": 0.25
+      "Rarely (a few times per year)": 0.30
+      "Never": 0.30
+    source:
+      name: "Eurobarometer 97.4 (April 2022) — Organic food consumption"
+      url: "https://ec.europa.eu/public_opinion/archives/ebs/ebs_519_en.pdf"
+    note: "Post-pandemic stabilization. Uptake varies 8% (Bulgaria) to 35% (Denmark). EU average ~15% regular."
+
+  - id: "price_vs_quality_priority"
+    question: "When choosing a food product, what matters most to you?"
+    options:
+      - "Low price is the main factor"
+      - "Quality and price matter equally"
+      - "Quality is more important than price"
+      - "Brand reputation / familiarity"
+    reference:
+      "Low price is the main factor": 0.25
+      "Quality and price matter equally": 0.45
+      "Quality is more important than price": 0.22
+      "Brand reputation / familiarity": 0.08
+    source:
+      name: "ALLBUS 2022 (Allgemeine Bevölkerungsumfrage der Sozialwissenschaften)"
+      url: "https://www.gesis.org/allbus/"
+    note: "German baseline with EU generalization. Compressed middle reflects heterogeneity across income groups."
+
+  - id: "smoking_status"
+    question: "Do you currently smoke tobacco?"
+    options:
+      - "Yes, daily"
+      - "Yes, occasionally"
+      - "No, but I used to"
+      - "No, never"
+    reference:
+      "Yes, daily": 0.15
+      "Yes, occasionally": 0.08
+      "No, but I used to": 0.22
+      "No, never": 0.55
+    source:
+      name: "Eurostat Statistics on Income and Living Conditions (EU-SILC 2023)"
+      url: "https://ec.europa.eu/eurostat/web/microdata/european-union-statistics-on-income-and-living-conditions"
+    note: "Prevalence ~23% smokers. Range: Bulgaria 30%, Sweden 8%. Non-daily smoking rising in Western EU."
+
+  - id: "online_grocery_adoption"
+    question: "In the past 12 months, have you bought groceries online (for home delivery or pickup)?"
+    options:
+      - "Yes, regularly (at least monthly)"
+      - "Yes, occasionally (a few times)"
+      - "No, but I plan to try"
+      - "No, and I don't plan to"
+    reference:
+      "Yes, regularly (at least monthly)": 0.10
+      "Yes, occasionally (a few times)": 0.20
+      "No, but I plan to try": 0.15
+      "No, and I don't plan to": 0.55
+    source:
+      name: "Eurostat Information Society Statistics (2024) & Retail E-commerce Europe Report"
+      url: "https://ec.europa.eu/eurostat/web/information-society/"
+    note: "Post-pandemic baseline (2023). Penetration 10% regular, 30% ever-tried. UK/NL/DE lead; CEE lag."
+
+  - id: "household_food_budget_share"
+    question: "Approximately what share of your household's monthly spending goes to food and non-alcoholic beverages?"
+    options:
+      - "Less than 10%"
+      - "10–15%"
+      - "16–20%"
+      - "More than 20%"
+    reference:
+      "Less than 10%": 0.20
+      "10–15%": 0.40
+      "16–20%": 0.25
+      "More than 20%": 0.15
+    source:
+      name: "Eurostat Household Consumption Expenditure (COICOP 01-02) 2023"
+      url: "https://ec.europa.eu/eurostat/databrowser/view/prc_ppp_ind/default/table?lang=en"
+    note: "EU avg ~13–15% (COICOP 01–02). Inverse correlation with income. CEE/South higher shares."
+
+  - id: "sustainable_label_influence"
+    question: "How much do sustainability labels (e.g., organic, fair trade, carbon-neutral) influence your food purchases?"
+    options:
+      - "Heavily — I specifically seek them out"
+      - "Somewhat — I prefer them if available"
+      - "Minimally — I notice but don't prioritize"
+      - "Not at all"
+    reference:
+      "Heavily — I specifically seek them out": 0.12
+      "Somewhat — I prefer them if available": 0.28
+      "Minimally — I notice but don't prioritize": 0.38
+      "Not at all": 0.22
+    source:
+      name: "Eurobarometer 97.4 + Nielsen Sustainable Packaging Report (2023)"
+      url: "https://www.europarl.europa.eu/RegData/etudes/BRIE/2023/747266/EPRS_BRI(2023)747266_EN.pdf"
+    note: "Rising engagement: 40% aware & influenced. Germany/Nordics lead (35–40% 'heavily'); variance by age + education."
+
+  - id: "preferred_product_information"
+    question: "Which information on a food package is most important to you?"
+    options:
+      - "Ingredient list and allergens"
+      - "Nutritional values (calories, fats, sugars)"
+      - "Origin / production method"
+      - "Price and value for money"
+    reference:
+      "Ingredient list and allergens": 0.35
+      "Nutritional values (calories, fats, sugars)": 0.28
+      "Origin / production method": 0.18
+      "Price and value for money": 0.19
+    source:
+      name: "EFSA Consumer Survey on Information Labelling (2019) & post-pandemic trend analysis"
+      url: "https://www.efsa.europa.eu/"
+    note: "Allergen/ingredient dominates across all segments (health + regulatory awareness). Nutritional rising post-COVID."
