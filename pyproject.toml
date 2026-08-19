@@ -63,3 +63,9 @@ asyncio_mode = "auto"
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+
+[tool.ruff.lint]
+# Explizit die klassischen Ruff-Defaults festschreiben, damit neue
+# Ruff-Versionen (0.16 erweiterte den Default-Regelsatz) die CI nicht
+# ohne Code-Aenderung brechen.
+select = ["E4", "E7", "E9", "F"]
