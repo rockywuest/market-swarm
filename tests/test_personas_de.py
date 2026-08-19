@@ -1,12 +1,10 @@
 """Tests for German persona generator (personas_de module)."""
 
-import asyncio
 import json
 import os
 import tempfile
 from pathlib import Path
 
-import pytest
 
 from market_swarm.industry_packs.base import PersonaDefinition
 from market_swarm.personas_de import (
