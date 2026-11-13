@@ -327,7 +327,9 @@ def run_calibration(
         # Per-option deltas for transparency
         per_option_deltas = {
             opt: abs(simulated_dist.get(opt, 0.0) - question.reference.get(opt, 0.0))
-            for opt in set(simulated_dist.keys()) | set(question.reference.keys())
+            # dict.fromkeys keeps insertion order; a set would order by str hash,
+            # which differs between processes and reorders the exported JSON.
+            for opt in dict.fromkeys([*simulated_dist, *question.reference])
         }
 
         result = CalibrationResult(
