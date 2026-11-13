@@ -16,6 +16,7 @@ from collections import Counter
 from market_swarm.calibration import (
     _total_variation_distance,
     load_question_set,
+    stable_seed,
 )
 from market_swarm.engine import _get_async_client, _parse_llm_response, _resolve_model
 from market_swarm.population import load_population
@@ -23,7 +24,7 @@ from market_swarm.population import load_population
 
 async def ask(client, backend, model, persona, question, sem):
     options = question.options.copy()
-    random.Random(hash(f"{persona.name}:{question.id}") % (2**31)).shuffle(options)
+    random.Random(stable_seed(persona.name, question.id, "shuffle")).shuffle(options)
     prompt = (
         f"Beantworte die Frage mit einem JSON-Objekt. Wähle genau EINE Option.\n\n"
         f"Frage: {question.question}\n\nOptionen:\n"

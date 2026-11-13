@@ -5,6 +5,7 @@ against known population distributions from public statistics.
 Uses Total Variation Distance (TVD) as the primary metric.
 """
 
+import hashlib
 import json
 import logging
 import random
@@ -157,6 +158,17 @@ def _total_variation_distance(simulated: dict[str, float], reference: dict[str, 
     return tvd
 
 
+def stable_seed(*parts: str) -> int:
+    """Derive a process-independent RNG seed from string parts.
+
+    Python's built-in hash() is randomized per process (PYTHONHASHSEED), so it
+    must not be used for seeds. The parts are JSON-encoded as a list before
+    hashing, so separators cannot collide: ("ab", "c") != ("a", "bc").
+    """
+    payload = json.dumps(list(parts), ensure_ascii=False).encode("utf-8")
+    return int.from_bytes(hashlib.sha256(payload).digest()[:8], "big") % (2**31)
+
+
 def _mock_answer(
     persona_name: str, question_id: str, options: list[str], reference: dict[str, float]
 ) -> str:
@@ -174,7 +186,7 @@ def _mock_answer(
     Returns:
         One of the options.
     """
-    seed = hash(f"{persona_name}:{question_id}") % (2**31)
+    seed = stable_seed(persona_name, question_id)
     rng = random.Random(seed)
 
     # 70% chance of picking from reference distribution, 30% uniform
@@ -235,7 +247,7 @@ def run_calibration(
         for question in questions:
             # Randomize option order for each persona (seeded for reproducibility)
             options_shuffled = question.options.copy()
-            shuffle_seed = hash(f"{persona.name}:{question.id}:shuffle") % (2**31)
+            shuffle_seed = stable_seed(persona.name, question.id, "shuffle")
             random.Random(shuffle_seed).shuffle(options_shuffled)
 
             if mock_enabled():

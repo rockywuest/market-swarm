@@ -1,7 +1,11 @@
 """Tests for the calibration harness."""
 
+import json
 import os
+import subprocess
+import sys
 import tempfile
+from pathlib import Path
 
 import pytest
 
@@ -12,6 +16,7 @@ from market_swarm.calibration import (
     run_calibration,
     _total_variation_distance,
     _mock_answer,
+    stable_seed,
 )
 
 
@@ -297,3 +302,78 @@ class TestExportJSON:
 
         finally:
             os.environ.pop("MARKET_SWARM_MOCK", None)
+
+
+_CROSS_PROCESS_PROBE = """
+import json
+import market_swarm.calibration as cal
+from market_swarm.calibration import CalibrationQuestion, run_calibration
+
+calls = []
+_original = cal._mock_answer
+
+def _spy(persona_name, question_id, options, reference):
+    answer = _original(persona_name, question_id, options, reference)
+    calls.append([persona_name, question_id, list(options), answer])
+    return answer
+
+cal._mock_answer = _spy
+questions = [
+    CalibrationQuestion(
+        id=qid,
+        question="Q?",
+        options=["A", "B", "C", "D"],
+        reference={"A": 0.4, "B": 0.3, "C": 0.2, "D": 0.1},
+        source={"name": "Test", "url": "http://test"},
+    )
+    for qid in ("q1", "q2")
+]
+run_calibration("fmcg", questions)
+print("RESULT:" + json.dumps(calls))
+"""
+
+
+def _run_probe_with_hash_seed(hash_seed: str) -> list:
+    """Run calibration in a fresh interpreter with the given PYTHONHASHSEED."""
+    repo_root = Path(__file__).resolve().parents[1]
+    env = {
+        **os.environ,
+        "PYTHONHASHSEED": hash_seed,
+        "PYTHONPATH": str(repo_root),
+        "MARKET_SWARM_MOCK": "1",
+    }
+    proc = subprocess.run(
+        [sys.executable, "-c", _CROSS_PROCESS_PROBE],
+        capture_output=True,
+        text=True,
+        env=env,
+        cwd=repo_root,
+        timeout=120,
+        check=True,
+    )
+    lines = [line for line in proc.stdout.splitlines() if line.startswith("RESULT:")]
+    assert lines, f"probe produced no result line; stdout={proc.stdout!r}"
+    return json.loads(lines[-1][len("RESULT:") :])
+
+
+class TestCrossProcessDeterminism:
+    """Mock answers and option shuffles must not depend on PYTHONHASHSEED.
+
+    Python's str hash() is randomized per process, so seeding with it makes
+    'deterministic' mock output differ between runs. These tests run the same
+    calibration in two fresh interpreters with different hash seeds.
+    """
+
+    def test_mock_answers_and_shuffles_identical_across_processes(self):
+        first = _run_probe_with_hash_seed("1")
+        second = _run_probe_with_hash_seed("2")
+
+        assert len(first) > 0
+        assert first == second
+
+    def test_stable_seed_is_stable_and_unambiguous(self):
+        assert stable_seed("Alice", "q1") == stable_seed("Alice", "q1")
+        # Separator collisions must not map to the same seed.
+        assert stable_seed("ab", "c") != stable_seed("a", "bc")
+        assert stable_seed("a:b", "c") != stable_seed("a", "b:c")
+        assert 0 <= stable_seed("Alice", "q1") < 2**31
